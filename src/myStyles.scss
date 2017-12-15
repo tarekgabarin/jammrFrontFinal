@@ -1,0 +1,73 @@
+@import "../node_modules/bulma/sass/utilities/initial-variables";
+@import "../node_modules/bulma/sass/utilities/functions";
+
+
+$new-primary: #273043;
+
+$new-warning: #EFF6EE;
+
+$new-info: #9197AE;
+
+$new-success: #63768D;
+
+$new-danger: #666A86;
+
+$new-input-radius: 0px;
+
+$new-input-shadow: none;
+
+$new-control-radius: 0px;
+
+$menu-item-color:  "unquote('#ffff')";
+
+$primary: $new-primary;
+
+$warning: $new-warning;
+
+$info: $new-info;
+
+$success: $new-success;
+
+$danger: $new-danger;
+
+.has-primary-bg {
+
+  background-color: $new-danger
+
+}
+
+.has-warning-bg {
+
+  background-color: $new-warning;
+
+}
+
+.has-info-bg {
+
+  background-color: $new-info;
+
+}
+
+.has-danger-bg {
+
+  background-color: $new-danger;
+}
+
+.has-success-bg {
+
+  background-color: $new-success;
+
+}
+
+$menu-item-hover-background-color: $new-info;
+
+$menu-item-active-background-color: $new-success;
+
+$input-radius: $new-input-radius;
+
+$input-shadow: $new-input-radius;
+
+$control-radius: $new-control-radius;
+
+
+@import "../node_modules/bulma/bulma";

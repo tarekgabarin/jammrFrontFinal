@@ -1,0 +1,28 @@
+<Menu>
+                        <MenuItem primaryText="Tarek Gabarin" rightIcon={<i className="material-icons">&#xE853;</i>}/>
+
+                        <MenuItem primaryText="Sign Out" rightIcon={<i className="material-icons">&#xE5C4;</i>}/>
+
+                        <Divider />
+
+                        <MenuItem menuItemStyle={{backgroundColor: '#9197AE;'}} primaryText="Browse Users" leftIcon={<i className="material-icons">&#xE7FB;</i>}/>
+
+                        <MenuItem primaryText="My Saved Users" leftIcons={<i className="material-icons">&#xE924;</i>}/>
+
+                        <MenuItem primaryText="Message" leftIcon={<i className="material-icons">&#xE0B7;</i>}/>
+
+                        <MenuItem primaryText="My Contacts" leftIcons={<i className="material-icons">&#xE0BA;</i>}/>
+
+                        <MenuItem primaryText="Search Preferences" leftIcon={<i className="material-icons">&#xE8B6;</i>}/>
+
+                    </Menu>
+
+
+<span className="has-text-white icon">
+
+                                                <i  className="fa fa-bars">
+
+
+                                                </i>
+
+                                                </span>

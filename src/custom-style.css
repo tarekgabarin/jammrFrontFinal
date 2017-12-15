@@ -1,0 +1,22 @@
+.underline {
+
+    border-bottom: #222222 solid 1px;
+
+}
+
+.margin-list-item{
+
+    margin-bottom: 4px;
+}
+
+.icon-color-white {
+
+    color: white !important;
+
+}
+
+.margin-right-image-fix {
+
+    margin-right: 10px;
+
+}

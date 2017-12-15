@@ -1,0 +1,45 @@
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #273043;
+    overflow-x: hidden;
+    transition: 0.2s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #ECEFF1;
+    display: block;
+    transition: 0.5s;
+}
+
+.sidenav section:hover {
+
+    background-color: #63768D;
+
+}
+
+.sidenav section .active-menu-link {
+
+    background-color: #666A86 !important;
+
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding-top: 76px;
+
+    height: 100%;
+
+
+}
