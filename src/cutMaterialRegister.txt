@@ -1,0 +1,74 @@
+
+
+                        <Field name="form_skills" component={({input, meta}) => {
+
+                            return (
+
+                                <div>
+
+                                    <ul>
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Acting" type="checkbox" {...input}/>
+                                                Acting
+                                            </label>
+                                        </li>
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Drawing" type="checkbox" {...input}/>
+                                                Drawing
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Music" type="checkbox" {...input}/>
+                                                Music
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Writing" type="checkbox" {...input}/>
+                                                Writing
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Programming" type="checkbox" {...input}/>
+                                                Programming
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Videography" type="checkbox" {...input}/>
+                                                Videography
+                                            </label>
+
+
+                                        </li>
+
+
+                                    </ul>
+
+                                    {meta.touched && meta.error &&
+                                    <p className="help form-warning">{meta.error}</p>}
+
+
+                                </div>
+
+                            )
+
+                        }}/>

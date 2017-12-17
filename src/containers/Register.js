@@ -43,17 +43,7 @@ import {Field, reduxForm} from 'redux-form';
  */
 
 
-// const CheckBoxSkills = ({options}) => {
-//
-//         options.map(function(vale){
-//
-//
-//
-//
-//
-//         })
-//
-// };
+
 
 
 
@@ -61,6 +51,72 @@ class Register extends Component {
 
 
     render() {
+
+
+            let skills_ = [
+
+                {value: "Acting", index: 1},
+
+                {value: "Drawing", index: 2},
+
+                {value: "Music", index: 3},
+
+                {value: "Writing", index: 4},
+
+                {value: "Programming", index: 5},
+
+                {value: "Videography", index: 6}
+
+
+            ];
+
+            // let skillsOptions2 = skills_.map(function(vale){
+            //
+            //
+            //
+            //
+            // })
+
+
+
+            let skillsOptions = skills_.map(function(vale){
+
+                let valeS = `${vale.value}`;
+
+
+                let nameS = `form_skills[${vale.value}]`;
+
+
+                return (
+
+                    <Field name={nameS} type="checkbox" component={({input}) => {
+
+
+                        return (
+
+
+                            <li className="margin-list-item">
+                                <label className="checkbox">
+                                    <input value={valeS} type="checkbox" {...input}/>
+                                    {vale.value}
+                                </label>
+                            </li>
+
+
+
+                        )
+
+
+                    }
+                    }/>
+
+
+                )
+
+            });
+
+
+
 
 
         let ages = [];
@@ -109,7 +165,7 @@ class Register extends Component {
                             <div className="field-body">
 
 
-                                <Field name="form_first_name" type="text" validate={required}
+                                <Field name="form_first_name" type="text"
                                        component={({input, meta}) => {
 
                                            return (
@@ -127,7 +183,7 @@ class Register extends Component {
 
                                        }}/>
 
-                                <Field name="form_last_name" type="text" validate={required}
+                                <Field name="form_last_name" type="text"
                                        component={({input, meta}) => {
 
                                            return (
@@ -258,81 +314,14 @@ class Register extends Component {
                         <h1 className="subtitle">I have the following skills...</h1>
 
 
+                        <ul>
+
+                            {skillsOptions}
+
+                        </ul>
 
 
 
-                        <Field name="form_skills" component={({input, meta}) => {
-
-                            return (
-
-                                <div>
-
-                                    <ul>
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Acting" type="checkbox" {...input}/>
-                                                Acting
-                                            </label>
-                                        </li>
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Drawing" type="checkbox" {...input}/>
-                                                Drawing
-                                            </label>
-
-                                        </li>
-
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Music" type="checkbox" {...input}/>
-                                                Music
-                                            </label>
-
-                                        </li>
-
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Writing" type="checkbox" {...input}/>
-                                                Writing
-                                            </label>
-
-                                        </li>
-
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Programming" type="checkbox" {...input}/>
-                                                Programming
-                                            </label>
-
-                                        </li>
-
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Videography" type="checkbox" {...input}/>
-                                                Videography
-                                            </label>
-
-
-                                        </li>
-
-
-                                    </ul>
-
-                                    {meta.touched && meta.error &&
-                                    <p className="help form-warning">{meta.error}</p>}
-
-
-                                </div>
-
-                            )
-
-                        }}/>
 
 
                         <div className="block">
