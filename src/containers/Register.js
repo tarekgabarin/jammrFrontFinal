@@ -6,9 +6,62 @@ import '../myStyles.css'
 
 import '../custom-style.css'
 
+import axios from 'axios'
+
+import validator from 'validator';
+
+import {Field, reduxForm} from 'redux-form';
+
+
+/*
+
+ <Field component={(props) => {
+
+ return (
+
+
+
+ )
+
+ }} />
+
+
+
+ put this in the
+
+ <p className="help is-danger">This email is invalid</p>
+
+
+
+
+ {
+ "results" : [],
+ "status" : "ZERO_RESULTS"
+ }
+
+
+ */
+
+
+// const CheckBoxSkills = ({options}) => {
+//
+//         options.map(function(vale){
+//
+//
+//
+//
+//
+//         })
+//
+// };
+
+
+
 class Register extends Component {
 
+
     render() {
+
 
         let ages = [];
 
@@ -19,6 +72,7 @@ class Register extends Component {
             ages.push(<option value={numString}>{i}</option>)
 
         }
+
 
         return (
 
@@ -45,25 +99,50 @@ class Register extends Component {
 
                     </div>
 
-                    <form>
+                    <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
 
                         <h1 className="subtitle">My name is...</h1>
 
                         <div className="field is-horizontal">
 
+
                             <div className="field-body">
-                                <div className="field">
-                                    <p className="control is-expanded">
-                                        <input type="text" placeholder="First Name" className="input"/>
 
-                                    </p>
-                                </div>
-                                <div className="field">
-                                    <p className="control is-expanded">
-                                        <input type="text" placeholder="Last Name" className="input"/>
 
-                                    </p>
-                                </div>
+                                <Field name="form_first_name" type="text" validate={required}
+                                       component={({input, meta}) => {
+
+                                           return (
+
+                                               <div className="field">
+                                                   <p className="control is-expanded">
+                                                       <input type="text" placeholder="First Name"
+                                                              className="input" {...input}/>
+
+                                                   </p>
+                                                   {meta.touched && meta.error &&
+                                                   <p className="help form-warning">{meta.error}</p>}
+                                               </div>
+                                           )
+
+                                       }}/>
+
+                                <Field name="form_last_name" type="text" validate={required}
+                                       component={({input, meta}) => {
+
+                                           return (
+
+                                               <div className="field">
+                                                   <p className="control is-expanded">
+                                                       <input type="text" placeholder="Last Name"
+                                                              className="input" {...input}/>
+                                                       {meta.touched && meta.error &&
+                                                       <p className="help form-warning">{meta.error}</p>}
+                                                   </p>
+                                               </div>
+                                           )
+
+                                       }}/>
 
 
                             </div>
@@ -79,20 +158,35 @@ class Register extends Component {
                         <h1 className="subtitle">My gender is...</h1>
 
                         <div className="field is-horizontal">
-                            <div className="field-body">
-                                <div className="field is-narrow">
-                                    <div className="control">
-                                        <label htmlFor="" className="radio">
-                                            <input type="radio" value="Male" name="gender"/>
-                                            Male
-                                        </label>
-                                        <label htmlFor="" className="radio">
-                                            <input type="radio" value="Female" name="gender"/>
-                                            Female
-                                        </label>
+
+                            <Field name="form_gender" type="radio" component={({input, meta}) => {
+
+                                return (
+
+                                    <div className="field-body">
+                                        <div className="field is-narrow">
+                                            <div className="control">
+                                                <label htmlFor="" className="radio">
+                                                    <input type="radio" value="Male" name="gender" {...input}/>
+                                                    Male
+                                                </label>
+                                                <label htmlFor="" className="radio">
+                                                    <input type="radio" value="Female" name="gender" {...input}/>
+                                                    Female
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {meta.touched && meta.error &&
+                                        <p className="help form-warning">{meta.error}</p>}
                                     </div>
-                                </div>
-                            </div>
+
+
+                                )
+
+
+                            }}/>
+
+
                         </div>
 
                         <div className="block">
@@ -108,25 +202,50 @@ class Register extends Component {
                         <div className="field is-horizontal">
                             <div className="field-body">
 
-                                <div className="field">
-                                    <p className="control has-icons-left has-icons-right">
-                                        <input className="input" type="email" placeholder="Email"/>
-                                        <span className="icon is-small is-left">
+
+                                <Field name="form_email" type="email" component={({input, meta}) => {
+
+                                    return (
+
+                                        <div className="field">
+                                            <p className="control has-icons-left has-icons-right">
+                                                <input className="input" type="email"
+                                                       placeholder="Email" {...input}/>
+                                                <span className="icon is-small is-left">
                                         <i className="fa fa-envelope"></i>
                                                                     </span>
-                                        <span class="icon is-small is-right">
+                                                <span className="icon is-small is-right">
                                          <i className="fa fa-check"></i>
                                                 </span>
-                                    </p>
-                                </div>
-                                <div className="field">
-                                    <p className="control has-icons-left">
-                                        <input className="input" type="password" placeholder="Password"/>
-                                        <span className="icon is-small is-left">
+                                            </p>
+                                            {meta.touched && meta.error &&
+                                            <p className="help form-warning">{meta.error}</p>}
+                                        </div>
+
+                                    )
+
+                                }}/>
+
+                                <Field name="form_password" type="password" component={({input, meta}) => {
+
+                                    return (
+
+                                        <div className="field">
+                                            <p className="control has-icons-left">
+                                                <input className="input" type="password"
+                                                       placeholder="Password" {...input}/>
+                                                <span className="icon is-small is-left">
                                                          <i className="fa fa-lock"></i>
                                                     </span>
-                                    </p>
-                                </div>
+                                            </p>
+                                            {meta.touched && meta.error &&
+                                            <p className="help form-warning">{meta.error}</p>}
+                                        </div>
+
+                                    )
+
+                                }}/>
+
 
                             </div>
 
@@ -138,62 +257,82 @@ class Register extends Component {
 
                         <h1 className="subtitle">I have the following skills...</h1>
 
-                        <ul>
-
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Acting" type="checkbox"/>
-                                    Acting
-                                </label>
-                            </li>
-
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Drawing" type="checkbox"/>
-                                    Drawing
-                                </label>
-
-                            </li>
 
 
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Music" type="checkbox"/>
-                                    Music
-                                </label>
-
-                            </li>
 
 
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Writing" type="checkbox"/>
-                                    Writing
-                                </label>
+                        <Field name="form_skills" component={({input, meta}) => {
 
-                            </li>
+                            return (
 
+                                <div>
 
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Programming" type="checkbox"/>
-                                    Programming
-                                </label>
+                                    <ul>
 
-                            </li>
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Acting" type="checkbox" {...input}/>
+                                                Acting
+                                            </label>
+                                        </li>
 
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Drawing" type="checkbox" {...input}/>
+                                                Drawing
+                                            </label>
 
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Videography" type="checkbox"/>
-                                    Videography
-                                </label>
-
-
-                            </li>
+                                        </li>
 
 
-                        </ul>
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Music" type="checkbox" {...input}/>
+                                                Music
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Writing" type="checkbox" {...input}/>
+                                                Writing
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Programming" type="checkbox" {...input}/>
+                                                Programming
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Videography" type="checkbox" {...input}/>
+                                                Videography
+                                            </label>
+
+
+                                        </li>
+
+
+                                    </ul>
+
+                                    {meta.touched && meta.error &&
+                                    <p className="help form-warning">{meta.error}</p>}
+
+
+                                </div>
+
+                            )
+
+                        }}/>
 
 
                         <div className="block">
@@ -203,62 +342,81 @@ class Register extends Component {
 
                         <h1 className="subtitle">I want to make...</h1>
 
-                        <ul>
 
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Music" type="checkbox"/>
-                                    Music
-                                </label>
-                            </li>
+                        <Field name="form_arts" component={({input, meta}) => {
 
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Game" type="checkbox"/>
-                                    Game
-                                </label>
-
-                            </li>
+                            return (
 
 
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Film" type="checkbox"/>
-                                    Film
-                                </label>
+                                <div>
 
-                            </li>
+                                    <ul>
 
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Music" type="checkbox" {...input}/>
+                                                Music
+                                            </label>
+                                        </li>
 
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Graphic Novel" type="checkbox"/>
-                                    Graphic Novel
-                                </label>
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Game" type="checkbox" {...input}/>
+                                                Game
+                                            </label>
 
-                            </li>
-
-
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Youtube Channel" type="checkbox"/>
-                                    Youtube Channel
-                                </label>
-
-                            </li>
+                                        </li>
 
 
-                            <li className="margin-list-item">
-                                <label className="checkbox">
-                                    <input value="Videography" type="checkbox"/>
-                                    Videography
-                                </label>
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Film" type="checkbox" {...input}/>
+                                                Film
+                                            </label>
+
+                                        </li>
 
 
-                            </li>
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Graphic Novel" type="checkbox" {...input}/>
+                                                Graphic Novel
+                                            </label>
+
+                                        </li>
 
 
-                        </ul>
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Youtube Channel" type="checkbox" {...input}/>
+                                                Youtube Channel
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Videography" type="checkbox" {...input}/>
+                                                Videography
+                                            </label>
+
+
+                                        </li>
+
+
+                                    </ul>
+
+
+                                    {meta.touched && meta.error &&
+                                    <p className="help form-warning">{meta.error}</p>}
+                                </div>
+
+
+                            )
+
+                        }}/>
+
 
                         <div className="block">
 
@@ -267,14 +425,28 @@ class Register extends Component {
 
                         <h1 className="subtitle">My age is...</h1>
 
-                        <div className="select is-multiple">
 
-                            <select name="" id="">
-                                {ages}
+                        <Field name="form_my_age" component={({input, meta}) => {
 
-                            </select>
+                            return (
 
-                        </div>
+                                <div className="select is-multiple">
+
+                                    <select name="" id="" {...input}>
+                                        {ages}
+
+                                    </select>
+
+                                    {meta.touched && meta.error &&
+                                    <p className="help form-warning">{meta.error}</p>}
+
+                                </div>
+
+
+                            )
+
+                        }}/>
+
 
                         <div className="block">
 
@@ -283,66 +455,107 @@ class Register extends Component {
 
                         <h1 className="subtitle">My location is.....</h1>
 
-                        <div className="field">
 
-                            <label className="label" htmlFor="">City</label>
+                        <Field name="form_city" component={({input, meta}) => {
 
-                            <div className="field">
+                            return (
 
-                                <div className="control has-icon-left">
 
-                                    <input type="text" className="input" placeholder="Enter your city"/>
-                                </div>
 
-                            </div>
+                                <div className="field">
 
-                        </div>
+                                    <label className="label" htmlFor="">City</label>
 
-                        <div className="field">
+                                    <div className="field">
 
-                            <label className="label" htmlFor="">Province</label>
+                                        <div className="control has-icon-left">
 
-                            <div className="control">
+                                            <input type="text" className="input"
+                                                   placeholder="Enter your city" {...input}/>
+                                        </div>
 
-                                <div className="select">
+                                    </div>
 
-                                    <select>
-
-                                    <option value={'Ontario'}>Ontario</option>
-                                    <option value="Quebec">Quebec</option>
-                                    <option value="Manitoba">Manitoba</option>
-                                    <option value="Saskatchewan">Saskatchewan</option>
-                                    <option value="Alberta">Alberta</option>
-                                    <option value="British Columbia">British Columbia</option>
-                                    <option value="Yukon">Yukon</option>
-                                    <option value="Northwest Territories">Northwest Territories</option>
-                                    <option value="Nunavut">Nunavut</option>
-                                    <option value="Newfoundland And Labrador">Newfoundland And Labrador</option>
-                                    <option value="New Brunswick">New Brunswick</option>
-                                    <option value="Nova Scotia">Nova Scotia</option>
-                                    <option value="Prince Edward Island">Prince Edward Island</option>
-
-                                    </select>
+                                    {meta.touched && meta.error &&
+                                    <p className="help form-warning">{meta.error}</p>}
 
                                 </div>
 
+                            )
 
-                            </div>
+                        }}/>
 
 
-                        </div>
+                        <Field name="form_province" component={({input, meta}) => {
 
-                        <div className="field">
+                            return (
 
-                            <label className="label"> Address</label>
+                                <div className="field">
 
-                            <div className="control">
+                                    <label className="label" htmlFor="">Province</label>
 
-                                <input type="text" className="input" placeholder="Enter your address"/>
+                                    <div className="control">
 
-                            </div>
+                                        <div className="select">
 
-                        </div>
+                                            <select {...input}>
+
+                                                <option value={'Ontario'}>Ontario</option>
+                                                <option value="Quebec">Quebec</option>
+                                                <option value="Manitoba">Manitoba</option>
+                                                <option value="Saskatchewan">Saskatchewan</option>
+                                                <option value="Alberta">Alberta</option>
+                                                <option value="British Columbia">British Columbia</option>
+                                                <option value="Yukon">Yukon</option>
+                                                <option value="Northwest Territories">Northwest Territories</option>
+                                                <option value="Nunavut">Nunavut</option>
+                                                <option value="Newfoundland And Labrador">Newfoundland And
+                                                    Labrador
+                                                </option>
+                                                <option value="New Brunswick">New Brunswick</option>
+                                                <option value="Nova Scotia">Nova Scotia</option>
+                                                <option value="Prince Edward Island">Prince Edward Island</option>
+
+                                            </select>
+
+                                        </div>
+
+
+                                    </div>
+
+                                    {meta.touched && meta.error &&
+                                    <p className="help form-warning">{meta.error}</p>}
+
+
+                                </div>
+
+                            )
+
+                        }}/>
+
+                        <Field name="form_address" component={({input, meta}) => {
+
+                            return (
+
+                                <div className="field">
+
+                                    <label className="label"> Address</label>
+
+                                    <div className="control">
+
+                                        <input type="text" className="input"
+                                               placeholder="Enter your address" {...input}/>
+
+                                    </div>
+
+                                    {meta.touched && meta.error &&
+                                    <p className="help form-warning">{meta.error}</p>}
+
+                                </div>
+
+                            )
+
+                        }}/>
 
 
                         <div className="block">
@@ -350,7 +563,7 @@ class Register extends Component {
 
                         </div>
 
-                        <button className="is-info button is-fullwidth">Submit</button>
+                        <button type="submit" className="is-info button is-fullwidth">Submit</button>
 
                         <div className="block">
 
@@ -358,7 +571,6 @@ class Register extends Component {
                         </div>
 
                         <div className="block">
-
 
 
                         </div>
@@ -376,8 +588,8 @@ class Register extends Component {
 
         )
 
-
     }
+
 
 }
 
@@ -412,4 +624,179 @@ class Register extends Component {
 //
 // }
 
-export default connect()(Register);
+function formatStrings(str) {
+
+    // console.log(str)
+
+    if (str !== undefined) {
+
+        str = str.split('');
+
+        for (let i = 0; i < str.length; i++) {
+
+            if (str[i] === ' ') {
+
+                str[i] = '+';
+
+            }
+        }
+
+        return str.join('');
+
+    }
+
+
+}
+
+function verifyCityOrAddress(input){
+
+    input = formatStrings(input);
+
+    const apiString =  `https://maps.googleapis.com/maps/api/geocode/json?address=+${input}, +CA&key=AIzaSyCZGDHMtmb2WAoZG1VukVSumsjz9kNGJOw`;
+
+    return axios.get(apiString)
+
+        .then(response => {
+
+                if (response.data.status === 'OK'){
+
+                    return 'OK'
+
+                }
+                else if (response.data.status === 'ZERO_RESULTS'){
+
+
+                    return 'ZERO_RESULTS'
+                }
+
+
+                })
+
+
+        .catch(err => {
+
+            if (err) throw err;
+
+        })
+
+}
+
+function verifyEmail(input){
+
+    if (validator.isEmail(input)){
+
+        return true;
+
+    }
+    else {
+
+        return false;
+
+    }
+
+}
+
+
+
+function validate(values) {
+
+    const errors = {};
+
+    if (!values.form_first_name) {
+
+        errors.form_first_name = 'Field is empty'
+
+    }
+
+    if (!values.form_last_name) {
+
+        errors.form_last_name = 'Field is empty'
+
+    }
+
+    if (!values.form_gender) {
+
+        errors.form_gender = 'Please select a gender'
+
+    }
+
+    if (!values.form_email) {
+
+        errors.form_email = 'Field is empty'
+
+    }
+
+    if (!values.form_password) {
+
+        errors.form_password = "Field is empty"
+
+    }
+
+    if (!values.form_city) {
+
+        errors.form_city = "Field is empty"
+    }
+
+    if (values.form_city){
+
+        if (verifyCityOrAddress(values.form_city) === 'ZERO_RESULTS'){
+
+            errors.form_city = "Please provide a real Canadian city"
+
+        }
+
+
+    }
+
+    if (values.form_address){
+
+        if (verifyCityOrAddress(values.form_address) === 'ZERO_RESULTS' && values.form_address !== undefined){
+
+            errors.form_address = "Please provide a real address within Canada"
+
+        }
+
+
+    }
+
+    if (values.form_email){
+
+        if (verifyEmail(values.form_email) === false){
+
+
+            errors.form_address = "Please provide a real email"
+
+        }
+
+
+    }
+
+    if (values.form_skills){
+
+
+        console.log(values)
+
+
+    }
+
+
+
+
+
+
+
+
+
+    return errors;
+
+}
+
+Register = reduxForm({
+
+    validate,
+
+    form: 'register'
+
+})(Register);
+
+export default Register;
