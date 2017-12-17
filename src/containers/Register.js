@@ -53,6 +53,8 @@ class Register extends Component {
     render() {
 
 
+
+
             let skills_ = [
 
                 {value: "Acting", index: 1},
@@ -89,18 +91,22 @@ class Register extends Component {
 
                 return (
 
-                    <Field name={nameS} type="checkbox" component={({input}) => {
+                    <Field name={nameS} type="checkbox" component={({input, meta}) => {
 
 
                         return (
 
-
+                            <div>
                             <li className="margin-list-item">
                                 <label className="checkbox">
                                     <input value={valeS} type="checkbox" {...input}/>
                                     {vale.value}
                                 </label>
                             </li>
+                                {meta.error &&
+                                <p className="help form-warning">{meta.error}</p>}
+                            </div>
+
 
 
 
@@ -114,7 +120,6 @@ class Register extends Component {
                 )
 
             });
-
 
 
 
@@ -176,8 +181,17 @@ class Register extends Component {
                                                               className="input" {...input}/>
 
                                                    </p>
-                                                   {meta.touched && meta.error &&
-                                                   <p className="help form-warning">{meta.error}</p>}
+
+                                                   {meta.error &&  meta.touched ? (
+
+                                                       <p className="help has-warning-text">{meta.error}</p>
+
+                                                   ): (
+
+                                                       <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+                                                   )}
+
                                                </div>
                                            )
 
@@ -192,9 +206,19 @@ class Register extends Component {
                                                    <p className="control is-expanded">
                                                        <input type="text" placeholder="Last Name"
                                                               className="input" {...input}/>
-                                                       {meta.touched && meta.error &&
-                                                       <p className="help form-warning">{meta.error}</p>}
+
                                                    </p>
+
+                                                   {meta.error &&  meta.touched ? (
+
+                                                       <p className="help has-warning-text">{meta.error}</p>
+
+                                                   ): (
+
+                                                       <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+                                                   )}
+
                                                </div>
                                            )
 
@@ -232,8 +256,15 @@ class Register extends Component {
                                                 </label>
                                             </div>
                                         </div>
-                                        {meta.touched && meta.error &&
-                                        <p className="help form-warning">{meta.error}</p>}
+                                        {meta.error &&  meta.touched ? (
+
+                                            <p className="help has-warning-text">{meta.error}</p>
+
+                                        ): (
+
+                                            <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+                                        )}
                                     </div>
 
 
@@ -274,8 +305,15 @@ class Register extends Component {
                                          <i className="fa fa-check"></i>
                                                 </span>
                                             </p>
-                                            {meta.touched && meta.error &&
-                                            <p className="help form-warning">{meta.error}</p>}
+                                            {meta.error &&  meta.touched ? (
+
+                                                <p className="help has-warning-text">{meta.error}</p>
+
+                                            ): (
+
+                                                <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+                                            )}
                                         </div>
 
                                     )
@@ -294,8 +332,15 @@ class Register extends Component {
                                                          <i className="fa fa-lock"></i>
                                                     </span>
                                             </p>
-                                            {meta.touched && meta.error &&
-                                            <p className="help form-warning">{meta.error}</p>}
+                                            {meta.error &&  meta.touched ? (
+
+                                                <p className="help has-warning-text">{meta.error}</p>
+
+                                            ): (
+
+                                                <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+                                            )}
                                         </div>
 
                                     )
@@ -313,12 +358,41 @@ class Register extends Component {
 
                         <h1 className="subtitle">I have the following skills...</h1>
 
+                        <Field name="form_skills_warning" component={({ meta}) => {
 
-                        <ul>
+                                return (
 
-                            {skillsOptions}
+                                    <div>
 
-                        </ul>
+                                        <ul>
+
+                                            {skillsOptions}
+
+                                        </ul>
+
+                                        {meta.error &&  meta.touched ? (
+
+                                            <span className="has-warning-text">Please select at least one value</span>
+
+                                        ): (
+
+                                            <span style={{visibility: 'hidden'}}>Please select at least one value</span>
+
+                                        )}
+
+
+
+                                    </div>
+
+                                )
+                        }}/>
+
+
+
+
+
+
+
 
 
 
@@ -426,8 +500,7 @@ class Register extends Component {
 
                                     </select>
 
-                                    {meta.touched && meta.error &&
-                                    <p className="help form-warning">{meta.error}</p>}
+
 
                                 </div>
 
@@ -465,8 +538,15 @@ class Register extends Component {
 
                                     </div>
 
-                                    {meta.touched && meta.error &&
-                                    <p className="help form-warning">{meta.error}</p>}
+                                    {meta.error &&  meta.touched ? (
+
+                                        <p className="help has-warning-text">{meta.error}</p>
+
+                                    ): (
+
+                                        <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+                                    )}
 
                                 </div>
 
@@ -475,7 +555,7 @@ class Register extends Component {
                         }}/>
 
 
-                        <Field name="form_province" component={({input, meta}) => {
+                        <Field name="form_province" component={({input}) => {
 
                             return (
 
@@ -512,8 +592,7 @@ class Register extends Component {
 
                                     </div>
 
-                                    {meta.touched && meta.error &&
-                                    <p className="help form-warning">{meta.error}</p>}
+
 
 
                                 </div>
@@ -537,8 +616,15 @@ class Register extends Component {
 
                                     </div>
 
-                                    {meta.touched && meta.error &&
-                                    <p className="help form-warning">{meta.error}</p>}
+                                    {meta.error &&  meta.touched ? (
+
+                                        <p className="help has-warning-text">{meta.error}</p>
+
+                                    ): (
+
+                                        <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+                                    )}
 
                                 </div>
 
@@ -637,6 +723,44 @@ function formatStrings(str) {
 
 }
 
+function getArrayCheckBox(obj){
+
+    if (obj !== undefined && obj !== null) {
+
+        console.log('running');
+
+        let objArr = Object.keys(obj);
+
+        let arr = objArr.map(function (value) {
+
+            if (obj[value] === true && obj[value] !== undefined) {
+
+                return value;
+
+            }
+
+        });
+
+        let newArr = [];
+
+        for (let i = 0; i < arr.length; i++) {
+
+            if (arr[i] !== undefined) {
+
+
+                newArr.push(arr[i]);
+
+            }
+
+        }
+
+
+        return newArr
+
+    }
+
+}
+
 function verifyCityOrAddress(input){
 
     input = formatStrings(input);
@@ -689,6 +813,16 @@ function verifyEmail(input){
 
 function validate(values) {
 
+    function verifyIfTouched(arr){
+
+        for (let i = 0; i < arr.length; i++){
+
+
+
+        }
+
+    }
+
     const errors = {};
 
     if (!values.form_first_name) {
@@ -721,9 +855,21 @@ function validate(values) {
 
     }
 
+    if (!values.form_address){
+
+        errors.form_address = "Field is empty"
+
+    }
+
     if (!values.form_city) {
 
         errors.form_city = "Field is empty"
+    }
+
+    if (!values.form_skills) {
+
+        errors.form_skills_warning = 'Please select at least one value'
+
     }
 
     if (values.form_city){
@@ -760,13 +906,37 @@ function validate(values) {
 
     }
 
-    if (values.form_skills){
+    if ( getArrayCheckBox(values.form_skills)){
 
 
-        console.log(values)
+        let arr = getArrayCheckBox(values.form_skills);
+
+        if (arr.length === 0){
+
+            console.log('it runs');
+
+            errors.form_skills_warning = 'Please select at least one value'
+
+        }
+        else if (values.form_skills === undefined){
+
+            errors.form_skills_warning = 'Please select at least one value'
+
+        }
+
+
+
 
 
     }
+
+    else {
+
+        console.log(getArrayCheckBox(values.form_skills));
+
+    }
+
+
 
 
 
