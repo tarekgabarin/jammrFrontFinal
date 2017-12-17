@@ -245,13 +245,15 @@ class Register extends Component {
 
                                     <div className="field-body">
                                         <div className="field is-narrow">
-                                            <div className="control">
+                                            <div className="control" {...input}>
                                                 <label htmlFor="" className="radio">
-                                                    <input type="radio" value="Male" name="gender" {...input}/>
+                                                    <Field name="gender" component="input" type="radio" value="male"  />
+                                                    {' '}
                                                     Male
                                                 </label>
                                                 <label htmlFor="" className="radio">
-                                                    <input type="radio" value="Female" name="gender" {...input}/>
+                                                    <Field name="gender" component="input" type="radio" value="female" />
+                                                    {' '}
                                                     Female
                                                 </label>
                                             </div>
@@ -839,6 +841,8 @@ function validate(values) {
 
     if (!values.form_gender) {
 
+
+
         errors.form_gender = 'Please select a gender'
 
     }
@@ -869,6 +873,12 @@ function validate(values) {
     if (!values.form_skills) {
 
         errors.form_skills_warning = 'Please select at least one value'
+
+    }
+
+    if (values.form_gender){
+
+        console.log(values)
 
     }
 
