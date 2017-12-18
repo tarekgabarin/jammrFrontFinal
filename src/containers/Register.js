@@ -12,48 +12,174 @@ import validator from 'validator';
 
 import {Field, reduxForm} from 'redux-form';
 
-
-/*
-
- <Field component={(props) => {
-
- return (
-
-
-
- )
-
- }} />
-
-
-
- put this in the
-
- <p className="help is-danger">This email is invalid</p>
+import { SubmissionError } from 'redux-form'
 
 
 
 
- {
- "results" : [],
- "status" : "ZERO_RESULTS"
- }
+const renderName = ({input, meta}) => {
+
+    return (
+
+        <div className="field">
+            <p className="control is-expanded">
+                <input type="text" placeholder="First Name"
+                       className="input" {...input}/>
+
+            </p>
+
+            {meta.error &&  meta.touched ? (
+
+                <p className="help has-warning-text">{meta.error}</p>
+
+            ): (
+
+                <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+            )}
+
+        </div>
+    )
+
+};
+
+const renderEmail = ({input, meta}) => {
+
+    return (
+
+        <div className="field">
+            <p className="control has-icons-left has-icons-right">
+                <input className="input" type="email"
+                       placeholder="Email" {...input}/>
+                <span className="icon is-small is-left">
+                                        <i className="fa fa-envelope"></i>
+                                                                    </span>
+                <span className="icon is-small is-right">
+                                         <i className="fa fa-check"></i>
+                                                </span>
+            </p>
+            {meta.error &&  meta.touched ? (
+
+                <p className="help has-warning-text">{meta.error}</p>
+
+            ): (
+
+                <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+            )}
+        </div>
+
+    )
+
+};
+
+const renderPassword = ({input, meta}) => {
+
+    return (
+
+        <div className="field">
+            <p className="control has-icons-left">
+                <input className="input" type="password"
+                       placeholder="Password" {...input}/>
+                <span className="icon is-small is-left">
+                                                         <i className="fa fa-lock"></i>
+                                                    </span>
+            </p>
+            {meta.error &&  meta.touched ? (
+
+                <p className="help has-warning-text">{meta.error}</p>
+
+            ): (
+
+                <p className="help" style={{visibility: 'hidden'}}>Hidden</p>
+
+            )}
+        </div>
+
+    )
+
+};
+
+const renderCity = ({input, meta}) => {
+
+    return (
 
 
- */
 
+        <div className="field">
 
+            <label className="label" htmlFor="">City</label>
 
+            <div className="field">
 
+                <div className="control has-icon-left">
+
+                    <input type="text" className="input"
+                           placeholder="Enter your city" {...input}/>
+                </div>
+
+            </div>
+
+            {meta.error &&  meta.touched ? (
+
+                <p className="help has-warning-text">{meta.error}</p>
+
+            ): (
+
+                <p className="help" style={{visibility: 'hidden'}}>Hidden</p>
+
+            )}
+
+        </div>
+
+    )
+
+};
+
+const renderStreet = ({input, meta}) => {
+
+    return (
+
+        <div className="field">
+
+            <label className="label"> Address</label>
+
+            <div className="control">
+
+                <input type="text" className="input"
+                       placeholder="Enter your address" {...input}/>
+
+            </div>
+
+            {meta.error &&  meta.touched ? (
+
+                <p className="help has-warning-text">{meta.error}</p>
+
+            ): (
+
+                <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+            )}
+
+        </div>
+
+    )
+
+}
 
 
 class Register extends Component {
 
 
+
+
+
+
     render() {
 
+            console.log(this.props);
 
-
+            const { submitting, invalid, pristine, handleSubmit } = this.props;
 
             let skills_ = [
 
@@ -71,6 +197,8 @@ class Register extends Component {
 
 
             ];
+
+
 
             // let skillsOptions2 = skills_.map(function(vale){
             //
@@ -122,6 +250,62 @@ class Register extends Component {
             });
 
 
+        let arts_  = [
+
+            {value: "Music", index: 1},
+
+            {value: "Game", index: 2},
+
+            {value: "Film", index: 3},
+
+            {value: "Graphic Novel", index: 4},
+
+            {value: "Youtube Channel", index: 5},
+
+            ];
+
+        let artsOptions = arts_.map(function(value){
+
+            let valeS = `${value.value}`;
+
+
+            let nameS = `form_arts[${value.value}]`;
+
+
+            return (
+
+                <Field name={nameS} type="checkbox" component={({input, meta}) => {
+
+
+                    return (
+
+                        <div>
+                            <li className="margin-list-item">
+                                <label className="checkbox">
+                                    <input value={valeS} type="checkbox" {...input}/>
+                                    {value.value}
+                                </label>
+                            </li>
+                            {meta.error &&
+                            <p className="help form-warning">{meta.error}</p>}
+                        </div>
+
+
+
+
+                    )
+
+
+                }
+                }/>
+
+
+            )
+
+
+        });
+
+
 
 
         let ages = [];
@@ -160,7 +344,7 @@ class Register extends Component {
 
                     </div>
 
-                    <form onSubmit={this.props.handleSubmit(values => console.log(values))}>
+                    <form onSubmit={handleSubmit}>
 
                         <h1 className="subtitle">My name is...</h1>
 
@@ -171,58 +355,10 @@ class Register extends Component {
 
 
                                 <Field name="form_first_name" type="text"
-                                       component={({input, meta}) => {
-
-                                           return (
-
-                                               <div className="field">
-                                                   <p className="control is-expanded">
-                                                       <input type="text" placeholder="First Name"
-                                                              className="input" {...input}/>
-
-                                                   </p>
-
-                                                   {meta.error &&  meta.touched ? (
-
-                                                       <p className="help has-warning-text">{meta.error}</p>
-
-                                                   ): (
-
-                                                       <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
-
-                                                   )}
-
-                                               </div>
-                                           )
-
-                                       }}/>
+                                       component={renderName} />
 
                                 <Field name="form_last_name" type="text"
-                                       component={({input, meta}) => {
-
-                                           return (
-
-                                               <div className="field">
-                                                   <p className="control is-expanded">
-                                                       <input type="text" placeholder="Last Name"
-                                                              className="input" {...input}/>
-
-                                                   </p>
-
-                                                   {meta.error &&  meta.touched ? (
-
-                                                       <p className="help has-warning-text">{meta.error}</p>
-
-                                                   ): (
-
-                                                       <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
-
-                                                   )}
-
-                                               </div>
-                                           )
-
-                                       }}/>
+                                       component={renderName}/>
 
 
                             </div>
@@ -292,62 +428,9 @@ class Register extends Component {
                             <div className="field-body">
 
 
-                                <Field name="form_email" type="email" component={({input, meta}) => {
+                                <Field name="form_email" type="email" component={renderEmail}/>
 
-                                    return (
-
-                                        <div className="field">
-                                            <p className="control has-icons-left has-icons-right">
-                                                <input className="input" type="email"
-                                                       placeholder="Email" {...input}/>
-                                                <span className="icon is-small is-left">
-                                        <i className="fa fa-envelope"></i>
-                                                                    </span>
-                                                <span className="icon is-small is-right">
-                                         <i className="fa fa-check"></i>
-                                                </span>
-                                            </p>
-                                            {meta.error &&  meta.touched ? (
-
-                                                <p className="help has-warning-text">{meta.error}</p>
-
-                                            ): (
-
-                                                <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
-
-                                            )}
-                                        </div>
-
-                                    )
-
-                                }}/>
-
-                                <Field name="form_password" type="password" component={({input, meta}) => {
-
-                                    return (
-
-                                        <div className="field">
-                                            <p className="control has-icons-left">
-                                                <input className="input" type="password"
-                                                       placeholder="Password" {...input}/>
-                                                <span className="icon is-small is-left">
-                                                         <i className="fa fa-lock"></i>
-                                                    </span>
-                                            </p>
-                                            {meta.error &&  meta.touched ? (
-
-                                                <p className="help has-warning-text">{meta.error}</p>
-
-                                            ): (
-
-                                                <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
-
-                                            )}
-                                        </div>
-
-                                    )
-
-                                }}/>
+                                <Field name="form_password" type="password" component={renderPassword}/>
 
 
                             </div>
@@ -360,13 +443,13 @@ class Register extends Component {
 
                         <h1 className="subtitle">I have the following skills...</h1>
 
-                        <Field name="form_skills_warning" component={({ meta}) => {
+                        <Field name="form_skills_warning" component={({input, meta}) => {
 
                                 return (
 
                                     <div>
 
-                                        <ul>
+                                        <ul {...input}>
 
                                             {skillsOptions}
 
@@ -374,11 +457,11 @@ class Register extends Component {
 
                                         {meta.error &&  meta.touched ? (
 
-                                            <span className="has-warning-text">Please select at least one value</span>
+                                            <span className="has-warning-text">{meta.error}</span>
 
                                         ): (
 
-                                            <span style={{visibility: 'hidden'}}>Please select at least one value</span>
+                                            <span style={{visibility: 'hidden'}}>Hidden</span>
 
                                         )}
 
@@ -408,73 +491,31 @@ class Register extends Component {
                         <h1 className="subtitle">I want to make...</h1>
 
 
-                        <Field name="form_arts" component={({input, meta}) => {
+                        <Field name="form_arts_warning" component={({input, meta}) => {
 
                             return (
 
 
                                 <div>
 
-                                    <ul>
+                                    <ul {...input}>
 
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Music" type="checkbox" {...input}/>
-                                                Music
-                                            </label>
-                                        </li>
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Game" type="checkbox" {...input}/>
-                                                Game
-                                            </label>
-
-                                        </li>
-
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Film" type="checkbox" {...input}/>
-                                                Film
-                                            </label>
-
-                                        </li>
-
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Graphic Novel" type="checkbox" {...input}/>
-                                                Graphic Novel
-                                            </label>
-
-                                        </li>
-
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Youtube Channel" type="checkbox" {...input}/>
-                                                Youtube Channel
-                                            </label>
-
-                                        </li>
-
-
-                                        <li className="margin-list-item">
-                                            <label className="checkbox">
-                                                <input value="Videography" type="checkbox" {...input}/>
-                                                Videography
-                                            </label>
-
-
-                                        </li>
+                                        {artsOptions}
 
 
                                     </ul>
 
 
-                                    {meta.touched && meta.error &&
-                                    <p className="help form-warning">{meta.error}</p>}
+                                    {meta.error  && meta.touched ? (
+
+                                        <span  className="has-warning-text">{meta.error}</span>
+
+                                    ): (
+
+                                        <span style={{visibility: 'hidden'}}>Hidden</span>
+
+                                    )}
+
                                 </div>
 
 
@@ -520,41 +561,7 @@ class Register extends Component {
                         <h1 className="subtitle">My location is.....</h1>
 
 
-                        <Field name="form_city" component={({input, meta}) => {
-
-                            return (
-
-
-
-                                <div className="field">
-
-                                    <label className="label" htmlFor="">City</label>
-
-                                    <div className="field">
-
-                                        <div className="control has-icon-left">
-
-                                            <input type="text" className="input"
-                                                   placeholder="Enter your city" {...input}/>
-                                        </div>
-
-                                    </div>
-
-                                    {meta.error &&  meta.touched ? (
-
-                                        <p className="help has-warning-text">{meta.error}</p>
-
-                                    ): (
-
-                                        <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
-
-                                    )}
-
-                                </div>
-
-                            )
-
-                        }}/>
+                        <Field name="form_city" component={renderCity}/>
 
 
                         <Field name="form_province" component={({input}) => {
@@ -603,36 +610,7 @@ class Register extends Component {
 
                         }}/>
 
-                        <Field name="form_address" component={({input, meta}) => {
-
-                            return (
-
-                                <div className="field">
-
-                                    <label className="label"> Address</label>
-
-                                    <div className="control">
-
-                                        <input type="text" className="input"
-                                               placeholder="Enter your address" {...input}/>
-
-                                    </div>
-
-                                    {meta.error &&  meta.touched ? (
-
-                                        <p className="help has-warning-text">{meta.error}</p>
-
-                                    ): (
-
-                                        <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
-
-                                    )}
-
-                                </div>
-
-                            )
-
-                        }}/>
+                        <Field name="form_address" component={renderStreet}/>
 
 
                         <div className="block">
@@ -640,7 +618,17 @@ class Register extends Component {
 
                         </div>
 
-                        <button type="submit" className="is-info button is-fullwidth">Submit</button>
+                        {invalid || submitting || pristine ? (
+
+                            <button type="submit" disabled className="is-info button is-fullwidth">Submit</button>
+
+                        ): (
+
+                            <button type="submit"   className="is-info button is-fullwidth">Submit</button>
+
+                        )}
+
+
 
                         <div className="block">
 
@@ -668,7 +656,7 @@ class Register extends Component {
     }
 
 
-}
+};
 
 /// Maybe put this in the change user component
 
@@ -700,6 +688,8 @@ class Register extends Component {
 //
 //
 // }
+
+
 
 function formatStrings(str) {
 
@@ -763,25 +753,31 @@ function getArrayCheckBox(obj){
 
 }
 
-function verifyCityOrAddress(input){
+function verifyCityOrAddress(inputAddress, inputCity){
 
-    input = formatStrings(input);
+    inputAddress = formatStrings(inputAddress);
 
-    const apiString =  `https://maps.googleapis.com/maps/api/geocode/json?address=+${input}, +CA&key=AIzaSyCZGDHMtmb2WAoZG1VukVSumsjz9kNGJOw`;
+    inputCity = formatStrings(inputCity);
+
+    console.log('verifyCityOrAddress is running');
+
+    const apiString =  `https://maps.googleapis.com/maps/api/geocode/json?address=+${inputAddress}, +${inputCity}, +CA&key=AIzaSyCZGDHMtmb2WAoZG1VukVSumsjz9kNGJOw`;
 
     return axios.get(apiString)
 
         .then(response => {
 
+                console.log(response);
+
                 if (response.data.status === 'OK'){
 
-                    return 'OK'
+                    return true
 
                 }
                 else if (response.data.status === 'ZERO_RESULTS'){
 
 
-                    return 'ZERO_RESULTS'
+                    return false
                 }
 
 
@@ -795,6 +791,23 @@ function verifyCityOrAddress(input){
         })
 
 }
+
+function mySubmit(values){
+
+    if (!verifyCityOrAddress(values.form_city) && !verifyCityOrAddress(values.form_address)){
+
+        throw new SubmissionError({form_city: "Please provide a real Canadian city", form_address: "Please provide a real Canadian address"})
+
+
+    }
+    else {
+
+
+
+    }
+
+
+};
 
 function verifyEmail(input){
 
@@ -815,15 +828,8 @@ function verifyEmail(input){
 
 function validate(values) {
 
-    function verifyIfTouched(arr){
+    console.log(values);
 
-        for (let i = 0; i < arr.length; i++){
-
-
-
-        }
-
-    }
 
     const errors = {};
 
@@ -870,9 +876,16 @@ function validate(values) {
         errors.form_city = "Field is empty"
     }
 
-    if (!values.form_skills) {
+    if (!values.form_skills_warning) {
+
 
         errors.form_skills_warning = 'Please select at least one value'
+
+    }
+
+    if (!values.form_arts_warning) {
+
+        errors.form_arts_warning = 'Please select at least one value'
 
     }
 
@@ -882,27 +895,58 @@ function validate(values) {
 
     }
 
-    if (values.form_city){
+    if (values.form_province){
 
-        if (verifyCityOrAddress(values.form_city) === 'ZERO_RESULTS'){
+        console.log(values.form_province)
 
-            errors.form_city = "Please provide a real Canadian city"
+    }
+
+    ///console.log(verifyCityOrAddress(values.form_address, values.form_city));
+
+    if (values.form_city && values.form_address && values.form_province){
+
+        if (verifyCityOrAddress(values.form_address, values.form_city) === false){
+
+            console.log('it runs');
+
+            errors.form_address = "Please provide a real address within Canada";
 
         }
 
 
     }
 
-    if (values.form_address){
-
-        if (verifyCityOrAddress(values.form_address) === 'ZERO_RESULTS' && values.form_address !== undefined){
-
-            errors.form_address = "Please provide a real address within Canada"
-
-        }
 
 
-    }
+
+    // if (values.form_city){
+    //
+    //
+    //
+    //     console.log(values.form_city);
+    //
+    //
+    //
+    //
+    //     if (verifyCityOrAddress(values.form_city) === false){
+    //
+    //         errors.form_city = "Please provide a real Canadian city"
+    //
+    //     }
+    //
+    //
+    // }
+    //
+    // if (values.form_address){
+    //
+    //     if (verifyCityOrAddress(values.form_address) === 'ZERO_RESULTS' && values.form_address !== undefined){
+    //
+    //         errors.form_address = "Please provide a real address within Canada"
+    //
+    //     }
+    //
+    //
+    // }
 
     if (values.form_email){
 
@@ -916,21 +960,50 @@ function validate(values) {
 
     }
 
-    if ( getArrayCheckBox(values.form_skills)){
+    if (values.form_skills){
 
 
         let arr = getArrayCheckBox(values.form_skills);
+
+        console.log('arr.length is...' + arr.length);
+
+        if (arr.length === 0){
+
+
+            values.form_skills_warning = false;
+
+            console.log("form_skills_warning is..." + values.form_skills_warning)
+
+        }
+
+        else {
+
+
+            values.form_skills_warning = true;
+
+        }
+
+
+
+
+
+    }
+
+    if ( getArrayCheckBox(values.form_arts)){
+
+
+        let arr = getArrayCheckBox(values.form_arts);
 
         if (arr.length === 0){
 
             console.log('it runs');
 
-            errors.form_skills_warning = 'Please select at least one value'
+            values.form_arts_warning = false
 
         }
-        else if (values.form_skills === undefined){
+        else {
 
-            errors.form_skills_warning = 'Please select at least one value'
+            values.form_arts_warning = true
 
         }
 
@@ -939,20 +1012,6 @@ function validate(values) {
 
 
     }
-
-    else {
-
-        console.log(getArrayCheckBox(values.form_skills));
-
-    }
-
-
-
-
-
-
-
-
 
 
 
@@ -964,7 +1023,16 @@ Register = reduxForm({
 
     validate,
 
-    form: 'register'
+    form: 'register',
+
+    initialValues: {
+
+        form_province: 'Ontario',
+
+        form_age: 18
+
+    }
+
 
 })(Register);
 

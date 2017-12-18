@@ -72,3 +72,47 @@
                             )
 
                         }}/>
+
+
+
+ <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Music" type="checkbox" {...input}/>
+                                                Music
+                                            </label>
+                                        </li>
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Game" type="checkbox" {...input}/>
+                                                Game
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Film" type="checkbox" {...input}/>
+                                                Film
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Graphic Novel" type="checkbox" {...input}/>
+                                                Graphic Novel
+                                            </label>
+
+                                        </li>
+
+
+                                        <li className="margin-list-item">
+                                            <label className="checkbox">
+                                                <input value="Youtube Channel" type="checkbox" {...input}/>
+                                                Youtube Channel
+                                            </label>
+
+                                        </li>
