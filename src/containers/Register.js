@@ -857,7 +857,24 @@ let submitValidate = (values) => {
                     return new Promise((resolve, reject) => {
 
 
-                        if (errorsObj.validLocation === false){
+
+
+
+                        if (!errorsObj.validLocation && !errorsObj.validEmail){
+
+                            throw new SubmissionError({
+
+                                form_email: "There is already an account with this email",
+
+                                form_location_warning: 'Please input a real address within Canada',
+
+                                _error: 'Please reenter from, See errors above.'
+
+                            })
+
+                        }
+
+                        else if (!errorsObj.validLocation && errorsObj.validEmail){
 
                             throw new SubmissionError({
 
@@ -870,8 +887,7 @@ let submitValidate = (values) => {
 
                         }
 
-                        else if (errorsObj.validEmail === false){
-
+                        else if (errorsObj.validLocation && !errorsObj.validEmail){
 
                             throw new SubmissionError({
 
@@ -881,48 +897,7 @@ let submitValidate = (values) => {
 
                             })
 
-
                         }
-
-
-                        // if (!errorsObj.validLocation && !errorsObj.validEmail){
-                        //
-                        //     throw new SubmissionError({
-                        //
-                        //         form_email: "There is already an account with this email",
-                        //
-                        //         form_location_warning: 'Please input a real address within Canada',
-                        //
-                        //         _error: 'Please reenter from, See errors above.'
-                        //
-                        //     })
-                        //
-                        // }
-                        //
-                        // else if (!errorsObj.validLocation && errorsObj.validEmail){
-                        //
-                        //     throw new SubmissionError({
-                        //
-                        //         form_location_warning: 'Please input a real address within Canada',
-                        //
-                        //         _error: 'Please reenter from, See errors above.'
-                        //
-                        //     })
-                        //
-                        //
-                        // }
-                        //
-                        // else if (errorsObj.validLocation && !errorsObj.validEmail){
-                        //
-                        //     throw new SubmissionError({
-                        //
-                        //         form_email: "There is already an account with this email",
-                        //
-                        //         _error: 'Please reenter from, See errors above.'
-                        //
-                        //     })
-                        //
-                        // }
 
                         else if (errorsObj.validEmail && errorsObj.validLocation){
 
