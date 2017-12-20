@@ -15,6 +15,7 @@ import {Field, reduxForm} from 'redux-form';
 import {SubmissionError} from 'redux-form'
 
 
+
 const renderName = ({input, meta}) => {
 
     return (
@@ -334,7 +335,12 @@ class Register extends Component {
 
                     </div>
 
-                    <form>
+                    <form onSubmit={handleSubmit(data => {
+
+                        submitValidate(data)
+
+
+                    })}>
 
                         <h1 className="subtitle">My name is...</h1>
 
@@ -625,12 +631,7 @@ class Register extends Component {
 
                         ) : (
 
-                            <button type="submit" onClick={handleSubmit(data => {
-
-                                this.props.onRegister(data)
-
-
-                            })} className="is-info button is-fullwidth">Submit</button>
+                            <button type="submit" className="is-info button is-fullwidth">Submit</button>
 
                         )}
 
@@ -663,36 +664,6 @@ class Register extends Component {
 
 }
 
-/// Maybe put this in the change user component
-
-// const mapStateToProps = (state) => {
-//
-//     return {
-//
-//         country: state.country,
-//
-//         firstName: state.firstName,
-//
-//         lastName: state.lastName,
-//
-//         iWantToMake: state.iWantToMake,
-//
-//         skills: state.skills,
-//
-//         age: state.age,
-//
-//         street: state.street,
-//
-//         city: state.city,
-//
-//         email: state.email,
-//
-//         password: state.email
-//
-//     }
-//
-//
-// }
 
 
 function formatStrings(str) {
@@ -757,67 +728,7 @@ function getArrayCheckBox(obj) {
 
 }
 
-function verifyCityOrAddress(inputAddress, inputCity, inputProvince) {
 
-    inputAddress = formatStrings(inputAddress);
-
-    inputCity = formatStrings(inputCity);
-
-    inputProvince = formatStrings(inputProvince);
-
-    console.log('verifyCityOrAddress is running');
-
-    const apiString = `https://maps.googleapis.com/maps/api/geocode/json?address=+${inputAddress}, +${inputCity}, +${inputProvince}, +CA&key=AIzaSyCZGDHMtmb2WAoZG1VukVSumsjz9kNGJOw`;
-
-    console.log(apiString);
-
-    axios.get(apiString)
-
-        .then(response => {
-
-            console.log(response);
-
-            if (response.data["status"] === 'OK') {
-
-                return true
-
-            }
-            else if (response.data["status"] === 'ZERO_RESULTS') {
-
-
-                return false
-            }
-
-
-        })
-
-
-        .catch(err => {
-
-            if (err) throw err;
-
-        });
-
-}
-
-function mySubmit(values) {
-
-    if (!verifyCityOrAddress(values.form_city) && !verifyCityOrAddress(values.form_address)) {
-
-        throw new SubmissionError({
-            form_city: "Please provide a real Canadian city",
-            form_address: "Please provide a real Canadian address"
-        })
-
-
-    }
-    else {
-
-
-    }
-
-
-};
 
 function verifyEmail(input) {
 
@@ -834,19 +745,62 @@ function verifyEmail(input) {
 
 }
 
-let asyncValidate = (values) => {
+
+//// TODO lets refactor this to be submit validation
+
+/// TODO include a way to check if there already is a user with a I think i did that I'll check the backend
+
+
+let submitValidate = (values) => {
 
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     return sleep(1000).then(() => {
 
-        // simulate server latency
+        const baseURL = "https://jammr-backend.herokuapp.com";
 
-        if (values.form_city && values.form_address && values.form_province){
+        const errorsObj = {};
 
-            console.log('please run');
+        let verifyLocationPromise = () => {
 
-            let verifyPromise = () => {
+            return new Promise((resolve, reject) => {
+
+                    const emailUrl = baseURL + `/checkEmail/${values.form_email}`;
+
+                    axios.get(emailUrl)
+
+                        .then(response => {
+
+                            console.log(response);
+
+                            if (response.data === 'EMAIL_TAKEN'){
+
+                                errorsObj.validEmail = false;
+
+                                resolve(errorsObj)
+
+                            }
+
+                            else {
+
+                                errorsObj.validEmail = true;
+
+                                resolve(errorsObj)
+
+                            }
+
+                        })
+
+
+
+            })
+
+
+        };
+
+        verifyLocationPromise().then(errorsObj => {
+
+            let verifyAddress = () => {
 
                 return new Promise((resolve, reject) => {
 
@@ -866,13 +820,17 @@ let asyncValidate = (values) => {
 
                             if (response.data["status"] === 'OK') {
 
-                                resolve(true)
+                                errorsObj.validLocation = true;
+
+                                resolve(errorsObj)
 
                             }
                             else if (response.data["status"] === 'ZERO_RESULTS') {
 
+                                errorsObj.validLocation = false;
 
-                                resolve(false)
+
+                                resolve(errorsObj)
                             }
 
 
@@ -888,27 +846,137 @@ let asyncValidate = (values) => {
 
                 })
 
-
             };
 
-            verifyPromise().then(result => {
-
-                if (result === false){
-
-                    throw {form_location_warning: 'Please enter a real Canadian address'}
+            verifyAddress().then(errorsObj => {
 
 
-                }
-
-            });
+                let finalPromise = () => {
 
 
-        }
+                    return new Promise((resolve, reject) => {
 
-    });
+
+                        if (errorsObj.validLocation === false){
+
+                            throw new SubmissionError({
+
+                                form_location_warning: 'Please input a real address within Canada',
+
+                                _error: 'Please reenter from, See errors above.'
+
+                            })
+
+
+                        }
+
+                        else if (errorsObj.validEmail === false){
+
+
+                            throw new SubmissionError({
+
+                                form_email: "There is already an account with this email",
+
+                                _error: 'Please reenter from, See errors above.'
+
+                            })
+
+
+                        }
+
+
+                        // if (!errorsObj.validLocation && !errorsObj.validEmail){
+                        //
+                        //     throw new SubmissionError({
+                        //
+                        //         form_email: "There is already an account with this email",
+                        //
+                        //         form_location_warning: 'Please input a real address within Canada',
+                        //
+                        //         _error: 'Please reenter from, See errors above.'
+                        //
+                        //     })
+                        //
+                        // }
+                        //
+                        // else if (!errorsObj.validLocation && errorsObj.validEmail){
+                        //
+                        //     throw new SubmissionError({
+                        //
+                        //         form_location_warning: 'Please input a real address within Canada',
+                        //
+                        //         _error: 'Please reenter from, See errors above.'
+                        //
+                        //     })
+                        //
+                        //
+                        // }
+                        //
+                        // else if (errorsObj.validLocation && !errorsObj.validEmail){
+                        //
+                        //     throw new SubmissionError({
+                        //
+                        //         form_email: "There is already an account with this email",
+                        //
+                        //         _error: 'Please reenter from, See errors above.'
+                        //
+                        //     })
+                        //
+                        // }
+
+                        else if (errorsObj.validEmail && errorsObj.validLocation){
+
+                            resolve(values)
+
+
+                        }
+
+
+
+                    })
+
+
+
+                };
+
+
+                finalPromise().then(values => {
+
+                        this.props.onRegister(values)
+
+
+                })
+                    .catch(err => {
+
+
+
+                    if (err instanceof SubmissionError) throw err;
+
+
+                })
+
+
+
+
+
+
+            })
+
+
+
+
+
+
+        })
+
+
+    })
 
 
 };
+
+
+
 
 
 
@@ -979,110 +1047,6 @@ function validate(values) {
     }
 
 
-
-
-    ///console.log(verifyCityOrAddress(values.form_address, values.form_city));
-
-    // if (values.form_province && values.form_address && values.form_city){
-    //
-    //
-    //     if (verifyCityOrAddress(values.form_address, values.form_city, values.form_province) === false){
-    //
-    //         console.log(verifyCityOrAddress(values.form_address, values.form_city, values.form_province));
-    //
-    //         errors.form_location_warning = "Please provide a real address within Canada";
-    //
-    //     }
-    //
-    //     console.log('Run, damn you!');
-    //
-    // }
-
-    // if (values.form_city && values.form_address && values.form_province){
-    //
-    //     console.log('please run');
-    //
-    //     let verifyPromise = () => {
-    //
-    //         return new Promise((resolve, reject) => {
-    //
-    //             let result = verifyCityOrAddress(values.form_address, values.form_city, values.form_province);
-    //
-    //             // let dataObj = {
-    //             //
-    //             //     result,
-    //             //
-    //             //     errors
-    //             //
-    //             // };
-    //
-    //             if (result !== undefined){
-    //
-    //                 resolve(result)
-    //
-    //             }
-    //             else {
-    //
-    //                 reject('Problem with verifyPromise()')
-    //
-    //             }
-    //
-    //
-    //         })
-    //
-    //
-    //     };
-    //
-    //     verifyPromise().then(result => {
-    //
-    //         if (result === false){
-    //
-    //             console.log('within verifyPromise, errors is....' + errors);
-    //
-    //             errors.form_location_warning = "Please provide a real address within Canada";
-    //
-    //
-    //             console.log('within verifyPromise, errors.form_location_warning is....' + errors.form_location_warning);
-    //
-    //             console.log('within verifyPromise, errors.form_first_name is...' + errors.form_first_name);
-    //
-    //
-    //         }
-    //
-    //     });
-    //
-    //
-    // }
-
-
-    // if (values.form_city){
-    //
-    //
-    //
-    //     console.log(values.form_city);
-    //
-    //
-    //
-    //
-    //     if (verifyCityOrAddress(values.form_city) === false){
-    //
-    //         errors.form_city = "Please provide a real Canadian city"
-    //
-    //     }
-    //
-    //
-    // }
-    //
-    // if (values.form_address){
-    //
-    //     if (verifyCityOrAddress(values.form_address) === 'ZERO_RESULTS' && values.form_address !== undefined){
-    //
-    //         errors.form_address = "Please provide a real address within Canada"
-    //
-    //     }
-    //
-    //
-    // }
 
     if (values.form_email) {
 
@@ -1155,9 +1119,6 @@ export default reduxForm({
 
     validate,
 
-    asyncValidate,
-
-    asyncBlurFields: ['form_location_warning'],
 
     form: 'register',
 
