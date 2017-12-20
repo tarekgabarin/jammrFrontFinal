@@ -335,12 +335,7 @@ class Register extends Component {
 
                     </div>
 
-                    <form onSubmit={handleSubmit(data => {
-
-                        submitValidate(data)
-
-
-                    })}>
+                    <form>
 
                         <h1 className="subtitle">My name is...</h1>
 
@@ -631,7 +626,12 @@ class Register extends Component {
 
                         ) : (
 
-                            <button type="submit" className="is-info button is-fullwidth">Submit</button>
+                            <button type="submit" onClick={handleSubmit(data => {
+
+                                submitValidate(data)
+
+
+                            })} className="is-info button is-fullwidth">Submit</button>
 
                         )}
 
@@ -855,10 +855,6 @@ let submitValidate = (values) => {
 
 
                     return new Promise((resolve, reject) => {
-
-
-
-
 
                         if (!errorsObj.validLocation && !errorsObj.validEmail){
 
