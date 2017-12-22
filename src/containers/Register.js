@@ -15,8 +15,7 @@ import {Field, reduxForm} from 'redux-form';
 import {SubmissionError} from 'redux-form'
 
 
-
-const renderName = ({input, meta}) => {
+const renderFirstName = ({input, meta}) => {
 
     return (
 
@@ -42,7 +41,33 @@ const renderName = ({input, meta}) => {
 
 };
 
-const renderEmail = ({input, meta}) => {
+const renderLastName = ({input, meta}) => {
+
+    return (
+
+        <div className="field">
+            <p className="control is-expanded">
+                <input type="text" placeholder="Last Name"
+                       className="input" {...input}/>
+
+            </p>
+
+            {meta.error && meta.touched ? (
+
+                <p className="help has-warning-text">{meta.error}</p>
+
+            ) : (
+
+                <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+
+            )}
+
+        </div>
+    )
+
+};
+
+const renderEmail = ({input, meta}, warning) => {
 
     return (
 
@@ -63,7 +88,7 @@ const renderEmail = ({input, meta}) => {
 
             ) : (
 
-                <p className="help" style={{visibility: 'hidden'}}>meta.error</p>
+                <p className="help" style={{visibility: 'hidden'}}>Hidden</p>
 
             )}
         </div>
@@ -169,10 +194,210 @@ const renderStreet = ({input, meta}) => {
 
 class Register extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+
+            validEmail: true,
+
+            validLocation: true
+
+        };
+    }
+
+    submitValidate(values) {
+
+        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+        return sleep(1000).then(() => {
+
+            const baseURL = "https://jammr-backend.herokuapp.com";
+
+            const errorsObj = {};
+
+            let verifyLocationPromise = () => {
+
+                return new Promise((resolve, reject) => {
+
+                    const emailUrl = baseURL + `/checkEmail/${values.form_email}`;
+
+                    axios.get(emailUrl)
+
+                        .then(response => {
+
+                            console.log(response);
+
+                            if (response.data === 'EMAIL_TAKEN') {
+
+                                errorsObj.validEmail = false;
+
+                                resolve(errorsObj)
+
+                            }
+
+                            else if (response.data === 'EMAIL_AVAILABLE') {
+
+                                errorsObj.validEmail = true;
+
+                                resolve(errorsObj)
+
+                            }
+
+                        })
+
+
+                })
+
+
+            };
+
+            verifyLocationPromise().then(errorsObj => {
+
+                let verifyAddress = () => {
+
+                    return new Promise((resolve, reject) => {
+
+                        let inputAddress = formatStrings(values.form_address);
+
+                        let inputCity = formatStrings(values.form_city);
+
+                        let inputProvince = formatStrings(values.form_province);
+
+                        let apiString = `https://maps.googleapis.com/maps/api/geocode/json?address=+${inputAddress}, +${inputCity}, +${inputProvince}, +CA&key=AIzaSyCZGDHMtmb2WAoZG1VukVSumsjz9kNGJOw`;
+
+                        axios.get(apiString)
+
+                            .then(response => {
+
+                                console.log(response);
+
+                                if (response.data["status"] === 'OK') {
+
+                                    errorsObj.validLocation = true;
+
+                                    resolve(errorsObj)
+
+                                }
+                                else if (response.data["status"] === 'ZERO_RESULTS') {
+
+                                    errorsObj.validLocation = false;
+
+
+                                    resolve(errorsObj)
+                                }
+
+
+                            })
+
+
+                            .catch(err => {
+
+                                if (err) throw err;
+
+                            });
+
+
+                    })
+
+                };
+
+                verifyAddress().then(errorsObj => {
+
+
+                    let finalPromise = () => {
+
+
+                        return new Promise((resolve, reject) => {
+
+                            if (!errorsObj.validLocation && !errorsObj.validEmail) {
+
+                                console.log('this.state is...');
+
+                                console.log(this.state);
+
+                                this.setState({
+
+                                    validEmail: false,
+
+                                    validLocation: false
+
+                                });
+
+
+                            }
+
+                            else if (!errorsObj.validLocation && errorsObj.validEmail) {
+
+
+                                this.setState({
+
+                                    validEmail: true,
+
+                                    validLocation: false
+
+
+                                })
+
+
+                            }
+
+                            else if (errorsObj.validLocation && !errorsObj.validEmail) {
+
+                                this.setState({
+
+                                    validEmail: false,
+
+                                    validLocation: true
+
+
+                                })
+
+                            }
+
+                            else if (errorsObj.validEmail && errorsObj.validLocation) {
+
+
+                                resolve(values)
+
+
+                            }
+
+
+                        })
+
+
+                    };
+
+
+                    finalPromise().then(values => {
+
+
+                        this.props.onRegister(values)
+
+
+                    })
+                        .catch(err => {
+
+
+                            if (err instanceof SubmissionError) throw err;
+
+
+                        })
+
+
+                })
+
+
+            })
+
+
+        })
+
+
+    };
 
     render() {
 
-        console.log(this.props);
 
         const {submitting, invalid, pristine, handleSubmit} = this.props;
 
@@ -192,14 +417,6 @@ class Register extends Component {
 
 
         ];
-
-
-        // let skillsOptions2 = skills_.map(function(vale){
-        //
-        //
-        //
-        //
-        // })
 
 
         let skillsOptions = skills_.map(function (vale) {
@@ -283,18 +500,12 @@ class Register extends Component {
                             <p className="help form-warning">{meta.error}</p>}
                         </div>
 
-
-
-
                     )
-
 
                 }
                 }/>
 
-
             )
-
 
         });
 
@@ -306,6 +517,52 @@ class Register extends Component {
             let numString = `${i}`;
 
             ages.push(<option value={numString}>{i}</option>)
+
+        }
+
+        let locationWarning = [];
+
+
+        if (this.state.validLocation === false) {
+
+            console.log('this.state.validLocation is...' + this.state.validLocation);
+
+            locationWarning.push(
+                <span className="has-warning-text">
+                Please provide a real address within Canada
+                </span>
+            );
+
+        }
+        else if (this.state.validLocation === false) {
+
+            console.log('this.state.validLocation is...' + this.state.validLocation);
+
+            locationWarning.push(
+                <span style={{visibility: 'hidden'}}>Hidden</span>
+            );
+
+        }
+
+
+        let emailWarning = [];
+
+        if (this.state.validEmail === false) {
+
+
+            console.log('this.state.validEmail is...' + this.state.validEmail);
+
+            emailWarning.push(
+                <span className="has-warning-text">Account with email already exists</span>
+            );
+
+        }
+        else if (this.state.validEmail === true) {
+
+            emailWarning.push(
+                <span style={{visibility: 'hidden'}}>Account with email already exists</span>
+            );
+
 
         }
 
@@ -346,10 +603,10 @@ class Register extends Component {
 
 
                                 <Field name="form_first_name" type="text"
-                                       component={renderName}/>
+                                       component={renderFirstName}/>
 
                                 <Field name="form_last_name" type="text"
-                                       component={renderName}/>
+                                       component={renderLastName}/>
 
 
                             </div>
@@ -428,6 +685,8 @@ class Register extends Component {
 
 
                         </div>
+
+                        {emailWarning}
 
 
                         <div className="block"></div>
@@ -590,29 +849,7 @@ class Register extends Component {
                         <Field name="form_address" component={renderStreet}/>
 
 
-                        <Field name="form_location_warning" component={({input, meta}) => {
-
-                            return (
-
-                                    <div {...input} className={meta.asyncValidating ? 'async-validating' : ''}>
-
-                                        {meta.error && meta.touched  ? (
-
-                                            <span className="has-warning-text">{meta.error}</span>
-
-                                        ) : (
-
-                                            <span style={{visibility: 'hidden'}}>Hidden</span>
-
-                                        )}
-
-
-                                    </div>
-
-                            )
-
-                        }}/>
-
+                        {locationWarning}
 
 
                         <div className="block">
@@ -628,7 +865,7 @@ class Register extends Component {
 
                             <button type="submit" onClick={handleSubmit(data => {
 
-                                submitValidate(data)
+                                this.submitValidate(data)
 
 
                             })} className="is-info button is-fullwidth">Submit</button>
@@ -665,10 +902,7 @@ class Register extends Component {
 }
 
 
-
 function formatStrings(str) {
-
-    // console.log(str)
 
     if (str !== undefined) {
 
@@ -729,7 +963,6 @@ function getArrayCheckBox(obj) {
 }
 
 
-
 function verifyEmail(input) {
 
     if (validator.isEmail(input)) {
@@ -744,215 +977,6 @@ function verifyEmail(input) {
     }
 
 }
-
-
-//// TODO lets refactor this to be submit validation
-
-/// TODO include a way to check if there already is a user with a I think i did that I'll check the backend
-
-
-let submitValidate = (values) => {
-
-    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-    return sleep(1000).then(() => {
-
-        const baseURL = "https://jammr-backend.herokuapp.com";
-
-        const errorsObj = {};
-
-        let verifyLocationPromise = () => {
-
-            return new Promise((resolve, reject) => {
-
-                    const emailUrl = baseURL + `/checkEmail/${values.form_email}`;
-
-                    axios.get(emailUrl)
-
-                        .then(response => {
-
-                            console.log(response);
-
-                            if (response.data === 'EMAIL_TAKEN'){
-
-                                errorsObj.validEmail = false;
-
-                                resolve(errorsObj)
-
-                            }
-
-                            else {
-
-                                errorsObj.validEmail = true;
-
-                                resolve(errorsObj)
-
-                            }
-
-                        })
-
-
-
-            })
-
-
-        };
-
-        verifyLocationPromise().then(errorsObj => {
-
-            let verifyAddress = () => {
-
-                return new Promise((resolve, reject) => {
-
-                    let inputAddress = formatStrings(values.form_address);
-
-                    let inputCity = formatStrings(values.form_city);
-
-                    let inputProvince = formatStrings(values.form_province);
-
-                    let apiString = `https://maps.googleapis.com/maps/api/geocode/json?address=+${inputAddress}, +${inputCity}, +${inputProvince}, +CA&key=AIzaSyCZGDHMtmb2WAoZG1VukVSumsjz9kNGJOw`;
-
-                    axios.get(apiString)
-
-                        .then(response => {
-
-                            console.log(response);
-
-                            if (response.data["status"] === 'OK') {
-
-                                errorsObj.validLocation = true;
-
-                                resolve(errorsObj)
-
-                            }
-                            else if (response.data["status"] === 'ZERO_RESULTS') {
-
-                                errorsObj.validLocation = false;
-
-
-                                resolve(errorsObj)
-                            }
-
-
-                        })
-
-
-                        .catch(err => {
-
-                            if (err) throw err;
-
-                        });
-
-
-                })
-
-            };
-
-            verifyAddress().then(errorsObj => {
-
-
-                let finalPromise = () => {
-
-
-                    return new Promise((resolve, reject) => {
-
-                        if (!errorsObj.validLocation && !errorsObj.validEmail){
-
-                            throw new SubmissionError({
-
-                                form_email: "There is already an account with this email",
-
-                                form_location_warning: 'Please input a real address within Canada',
-
-                                _error: 'Please reenter from, See errors above.'
-
-                            })
-
-                        }
-
-                        else if (!errorsObj.validLocation && errorsObj.validEmail){
-
-                            throw new SubmissionError({
-
-                                form_location_warning: 'Please input a real address within Canada',
-
-                                _error: 'Please reenter from, See errors above.'
-
-                            })
-
-
-                        }
-
-                        else if (errorsObj.validLocation && !errorsObj.validEmail){
-
-                            throw new SubmissionError({
-
-                                form_email: "There is already an account with this email",
-
-                                _error: 'Please reenter from, See errors above.'
-
-                            })
-
-                        }
-
-                        else if (errorsObj.validEmail && errorsObj.validLocation){
-
-                            resolve(values)
-
-
-                        }
-
-
-
-                    })
-
-
-
-                };
-
-
-                finalPromise().then(values => {
-
-                        this.props.onRegister(values)
-
-
-                })
-                    .catch(err => {
-
-
-
-                    if (err instanceof SubmissionError) throw err;
-
-
-                })
-
-
-
-
-
-
-            })
-
-
-
-
-
-
-        })
-
-
-    })
-
-
-};
-
-
-
-
-
-
-
-
 
 
 function validate(values) {
@@ -1018,7 +1042,6 @@ function validate(values) {
     }
 
 
-
     if (values.form_email) {
 
         if (verifyEmail(values.form_email) === false) {
@@ -1065,22 +1088,21 @@ function validate(values) {
     return errors
 
 
-
-
-
 }
 
 const mapDispatchToProps = (dispatch) => {
 
     return {
 
-        onRegister: (obj) => dispatch({type: "REGISTER", payload: obj})
+        onRegister: (obj) => dispatch({type: "REGISTER", payload: obj}),
 
     }
 
 };
 
-Register = connect(null,
+
+Register = connect(
+    null,
 
     mapDispatchToProps
 )(Register);
@@ -1098,9 +1120,6 @@ export default reduxForm({
         form_province: 'Ontario',
 
         form_age: 18,
-
-
-
     }
 
 

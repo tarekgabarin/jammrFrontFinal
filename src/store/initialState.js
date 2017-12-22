@@ -68,7 +68,11 @@ export const initialState = {
 
     conversationOtherUserPic: '',
 
-    messages: []
+    messages: [],
+
+    validEmail: true,
+
+    validLocation: true
 
 
 };

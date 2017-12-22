@@ -13,7 +13,6 @@ const registerReducer = (state = initialState, action) => {
 
     }
 
-
     return state
 
 

@@ -682,3 +682,33 @@ from inside validate()
     //
     //
     // };
+
+
+
+
+
+    old validation location thing
+
+
+    <Field name="form_location_warning" component={({input, meta}) => {
+
+                                return (
+
+                                        <div {...input} className={meta.asyncValidating ? 'async-validating' : ''}>
+
+                                            {meta.error && meta.touched  ? (
+
+                                                <span className="has-warning-text">{meta.error}</span>
+
+                                            ) : (
+
+                                                <span style={{visibility: 'hidden'}}>Hidden</span>
+
+                                            )}
+
+
+                                        </div>
+
+                                )
+
+                            }}/>
