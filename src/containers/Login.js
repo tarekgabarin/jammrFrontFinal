@@ -12,16 +12,18 @@ import '../custom-style.css'
 
 class Login extends Component {
 
+    submitValidation(){
 
-    componentDidUpdate(){
-
-        console.log('did it update?')
-
+        
 
     }
 
 
     render(){
+
+        console.log(this.props);
+
+       /// console.log('this.props.email is...' + this.props.email);
 
 
         return (
@@ -129,14 +131,18 @@ class Login extends Component {
                                                 <span className="icon is-small is-left">
                                         <i className="fa fa-envelope"></i>
                                                                     </span>
-                                                <span class="icon is-small is-right">
+                                                <span className="icon is-small is-right">
                                          <i className="fa fa-check"></i>
                                                 </span>
                                         </p>
                                     </div>
                                     <div className="field">
                                         <p className="control has-icons-left">
-                                            <input className="input" type="password" placeholder="Password"/>
+                                            <input onChange={(e) => {
+
+                                                this.props.handlePasswordInput(e)
+
+                                            }} className="input" type="password" placeholder="Password"/>
                              <span className="icon is-small is-left">
                                                          <i className="fa fa-lock"></i>
                                                     </span>
@@ -150,7 +156,24 @@ class Login extends Component {
                                         </p>
                                     </div>
 
-                            <Link to="/register" >Don't have an account? Register to create your own!</Link>
+
+                            <div className="block">
+
+                                <span className="has-warning-text">frwfwefwefwegwegwegwegwegwegwe</span>
+
+                            </div>
+
+
+
+
+
+                            <div className="block">
+
+                                <Link to="/register" >Don't have an account? Register to create your own!</Link>
+
+                            </div>
+
+
 
 
                         </div>
@@ -183,6 +206,23 @@ class Login extends Component {
 
 }
 
+let mapStateToProps = (state) => {
+
+    console.log('state in mapStateToProps is....');
+
+    console.log(state);
+
+    return {
+
+        password: state.loginReducer.password,
+
+        email: state.loginReducer.email
+
+    };
+
+
+};
+
 const mapDispatchToProps = (dispatch) => {
 
 
@@ -192,9 +232,6 @@ const mapDispatchToProps = (dispatch) => {
 
             let result = validator.isEmail(event.target.value);
 
-            console.log('result is...' + result)
-
-            console.log('event.target.value is..' + event.target.value);
 
             if (result) {
 
@@ -210,10 +247,17 @@ const mapDispatchToProps = (dispatch) => {
             }
 
 
+        },
+
+        handlePasswordInput: (event) => {
+
+            dispatch({type: 'LOGIN_PASSWORD', payload: event.target.value})
+
+
         }
 
     }
 
-}
+};
 
-export default connect(null, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

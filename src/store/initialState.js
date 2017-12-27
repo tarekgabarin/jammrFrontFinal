@@ -70,9 +70,6 @@ export const initialState = {
 
     messages: [],
 
-    validEmail: true,
-
-    validLocation: true
 
 
 };

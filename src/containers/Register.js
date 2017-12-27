@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 
 import {connect} from 'react-redux'
 
+import {register} from '../actions/index_actions'
+
 import '../myStyles.css'
 
 import '../custom-style.css'
@@ -12,7 +14,7 @@ import validator from 'validator';
 
 import {Field, reduxForm} from 'redux-form';
 
-import {SubmissionError} from 'redux-form'
+import {Redirect} from 'react-router-dom';
 
 
 const renderFirstName = ({input, meta}) => {
@@ -200,7 +202,9 @@ class Register extends Component {
 
             validEmail: true,
 
-            validLocation: true
+            validLocation: true,
+
+            isRegistered: false
 
         };
     }
@@ -225,7 +229,7 @@ class Register extends Component {
 
                         .then(response => {
 
-                            console.log(response);
+                            // console.log(response);
 
                             if (response.data === 'EMAIL_TAKEN') {
 
@@ -311,9 +315,9 @@ class Register extends Component {
 
                             if (!errorsObj.validLocation && !errorsObj.validEmail) {
 
-                                console.log('this.state is...');
-
-                                console.log(this.state);
+                                // console.log('this.state is...');
+                                //
+                                // console.log(this.state);
 
                                 this.setState({
 
@@ -372,14 +376,16 @@ class Register extends Component {
                     finalPromise().then(values => {
 
 
-                        this.props.onRegister(values)
+                        this.props.onRegister(values);
+
+                        this.setState({isRegistered: true});
 
 
                     })
                         .catch(err => {
 
 
-                            if (err instanceof SubmissionError) throw err;
+                            if (err) throw err;
 
 
                         })
@@ -397,6 +403,23 @@ class Register extends Component {
     };
 
     render() {
+
+        // console.log("this.props is....");
+
+        // console.log(this.props);
+
+        if (this.state.isRegistered === true){
+
+           /// console.log(this.props.myId);
+
+            return (
+
+                <Redirect to="/account"/>
+
+            )
+
+
+        }
 
 
         const {submitting, invalid, pristine, handleSubmit} = this.props;
@@ -525,7 +548,7 @@ class Register extends Component {
 
         if (this.state.validLocation === false) {
 
-            console.log('this.state.validLocation is...' + this.state.validLocation);
+            // console.log('this.state.validLocation is...' + this.state.validLocation);
 
             locationWarning.push(
                 <span className="has-warning-text">
@@ -536,7 +559,7 @@ class Register extends Component {
         }
         else if (this.state.validLocation === false) {
 
-            console.log('this.state.validLocation is...' + this.state.validLocation);
+            // console.log('this.state.validLocation is...' + this.state.validLocation);
 
             locationWarning.push(
                 <span style={{visibility: 'hidden'}}>Hidden</span>
@@ -550,7 +573,7 @@ class Register extends Component {
         if (this.state.validEmail === false) {
 
 
-            console.log('this.state.validEmail is...' + this.state.validEmail);
+            // console.log('this.state.validEmail is...' + this.state.validEmail);
 
             emailWarning.push(
                 <span className="has-warning-text">Account with email already exists</span>
@@ -928,7 +951,7 @@ function getArrayCheckBox(obj) {
 
     if (obj !== undefined && obj !== null) {
 
-        console.log('running');
+        // console.log('running');
 
         let objArr = Object.keys(obj);
 
@@ -981,7 +1004,7 @@ function verifyEmail(input) {
 
 function validate(values) {
 
-    console.log(values);
+    // console.log(values);
 
 
     const errors = {};
@@ -1031,13 +1054,13 @@ function validate(values) {
 
     if (values.form_gender) {
 
-        console.log(values)
+        // console.log(values)
 
     }
 
     if (values.form_province) {
 
-        console.log(values.form_province)
+        // console.log(values.form_province)
 
     }
 
@@ -1059,7 +1082,7 @@ function validate(values) {
 
         let arr = getArrayCheckBox(values.form_skills);
 
-        console.log('arr.length is...' + arr.length);
+        // console.log('arr.length is...' + arr.length);
 
         if (arr.length === 0) {
 
@@ -1094,26 +1117,45 @@ const mapDispatchToProps = (dispatch) => {
 
     return {
 
-        onRegister: (obj) => dispatch({type: "REGISTER", payload: obj}),
+        onRegister: (obj) => {
+
+            console.log(obj);
+
+            // let result_ = register(obj);
+            //
+            // console.log(result_);
+
+            dispatch(register(obj));
+
+            // console.log(dispatch(register(obj)));
+
+        },
 
     }
 
 };
 
+function mapStateToProps(state) {
 
-Register = connect(
-    null,
-
-    mapDispatchToProps
-)(Register);
+ // console.log(state);
 
 
-export default reduxForm({
+    return {
+
+        myId: state.registerReducer.myId
+
+    }
+
+
+}
+
+
+Register = reduxForm({
 
     validate,
 
 
-    form: 'register',
+    form: 'Register',
 
     initialValues: {
 
@@ -1125,3 +1167,4 @@ export default reduxForm({
 
 })(Register);
 
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

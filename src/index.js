@@ -10,9 +10,11 @@ import registerServiceWorker from './registerServiceWorker';
 
 import rootReducer from './store/index_reducer';
 
+import thunk from 'redux-thunk';
+
 import {Provider} from 'react-redux'
 
-import {createStore} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
 
 const muiTheme = getMuiTheme({
 
@@ -27,14 +29,11 @@ const muiTheme = getMuiTheme({
 });
 
 
-
 const store = createStore(
-        rootReducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-
+    rootReducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    applyMiddleware(thunk)
 );
-
-
 
 
 ReactDOM.render(

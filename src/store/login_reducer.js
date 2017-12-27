@@ -4,9 +4,6 @@ const loginReducer = (state = initialState, action) => {
 
     if (action.type === 'LOGIN_EMAIL'){
 
-        console.log('it ran');
-
-        console.log('action.payload is..' + action.payload);
 
         return {
 
@@ -23,7 +20,6 @@ const loginReducer = (state = initialState, action) => {
 
     if (action.type === 'LOGIN_PASSWORD'){
 
-        console.log('it ran');
 
         return {
 
