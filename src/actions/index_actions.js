@@ -74,7 +74,13 @@ export function register(fields) {
 
             headers: {
 
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/x-www-form-urlencoded',
+
+                'Access-Control-Allow-Origin': '*',
+
+                'Access-Control-Allow-Headers':  "Access-Control-Allow-Origin,Origin,X-Auth,X-Requested-With,Content-Type,Accept,content-type,application/json,x-auth",
+
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
 
             }
 

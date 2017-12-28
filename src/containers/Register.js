@@ -378,7 +378,7 @@ class Register extends Component {
 
                         this.props.onRegister(values);
 
-                        this.setState({isRegistered: true});
+                        // this.setState({isRegistered: true});
 
 
                     })
