@@ -78,7 +78,7 @@ export function register(fields) {
 
                 'Access-Control-Allow-Origin': '*',
 
-                'Access-Control-Allow-Headers':  "Access-Control-Allow-Origin,Origin,X-Auth,X-Requested-With,Content-Type,Accept,content-type,application/json,x-auth",
+                'Access-Control-Allow-Headers':   "Access-Control-Allow-Headers,Access-Control-Allow-Methods,Access-Control-Allow-Origin,Origin,X-Auth,X-Requested-With,Content-Type,Accept,content-type,application/json,x-auth,Access-Control-Request-Method,Access-Control-Request-Headers",
 
                 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
 
