@@ -38,6 +38,16 @@ export function register(fields) {
 
         console.log('skillsArs is...' + skillsArr);
 
+        // console.log('Below is fields....');
+        //
+        // console.log(fields);
+
+      ///  JSON.parse(fields);
+
+        console.log('Below is typeof(fields)....');
+
+        console.log(typeof(fields));
+
 
         const request = axios({
 
@@ -55,6 +65,8 @@ export function register(fields) {
 
                 password: fields.form_password,
 
+                age: fields.form_age,
+
                 skills: skillsArr,
 
                 iWantToMake: artsArr,
@@ -69,18 +81,6 @@ export function register(fields) {
 
                 imLookingFor: ['Acting', 'Drawing', 'Music', 'Writing', 'Programming', 'Videography']
 
-
-            },
-
-            headers: {
-
-                'Content-Type': 'application/x-www-form-urlencoded',
-
-                'Access-Control-Allow-Origin': '*',
-
-                'Access-Control-Allow-Headers':   "Access-Control-Allow-Headers,Access-Control-Allow-Methods,Access-Control-Allow-Origin,Origin,X-Auth,X-Requested-With,Content-Type,Accept,content-type,application/json,x-auth,Access-Control-Request-Method,Access-Control-Request-Headers",
-
-                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
 
             }
 
