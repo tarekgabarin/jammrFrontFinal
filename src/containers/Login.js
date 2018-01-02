@@ -8,7 +8,7 @@ import validator from 'validator'
 
 import axios from 'axios'
 
-/////import {login} from 'index_actions'
+import {login} from '../actions/index_actions'
 
 import '../myStyles.css'
 
@@ -29,6 +29,10 @@ class Login extends Component {
 
     loginValidation(email, password) {
 
+        console.log('In loginValidation, email is....' + email);
+
+        console.log('In loginValidation, password is....' + password);
+
         let verifyEmail = () => {
 
             return new Promise((resolve, reject) => {
@@ -45,15 +49,17 @@ class Login extends Component {
 
                         if (response.data === 'EMAIL_TAKEN') {
 
-                            this.setState({validEmail: true});
+                            let isValidEmail = true;
 
-                            resolve()
+                            resolve(isValidEmail);
 
                         }
 
                         else if (response.data === 'EMAIL_AVAILABLE') {
 
-                            this.setState({validEmail: false})
+                            let isValidEmail = false;
+
+                            resolve(isValidEmail);
 
                         }
 
@@ -65,63 +71,175 @@ class Login extends Component {
 
         };
 
-        verifyEmail().then(() => {
-
-            let login = (passwordInput, emailInput) => {
-
-                return function action(dispatch) {
+        verifyEmail().then((isValidEmail) => {
 
 
-                    let request = axios({
+            console.log('password is...' + password);
 
-                        method: 'post',
-
-                        url: "https://jammr-backend.herokuapp.com/register",
-
-                        data: {
-
-                            password: passwordInput,
+            console.log('email is...' + email);
 
 
-                            email: emailInput
+            console.log("Witin then callback, isValidEmail is..." + isValidEmail);
+
+            if (isValidEmail === true){
 
 
-                        }
+                let verifyPassword = () => {
+
+                    return new Promise((resolve, reject) => {
+
+                        axios({
+
+                            method: 'post',
+
+                            url: "https://jammr-backend.herokuapp.com/checkPassword",
+
+                            data: {
+
+                                password,
+
+                                email
+                            }
+
+                        })
+                            .then(response => {
+
+                                if (response.data === 'INCORRECT_PASSWORD'){
+
+                                    this.setState({
+
+                                        validPassword: false,
+
+                                        validEmail: isValidEmail
+
+                                    });
+
+                                    resolve();
+
+                                }
 
 
-                    });
+                            })
 
-
-                    return request.then(response => {
-
-                        if (response.data !== 'Unauthorized') {
-
-                            window.sessionStorage.setItem('x-auth', response.data);
-
-                            axios.defaults.headers.common['x-auth'] = sessionStorage.getItem('x-auth');
-
-                            this.props.onLogin(response.data)
-
-
-                        }
-
-                        else {
-
-                            this.setState({validPassword: false})
-
-
-                        }
 
 
                     })
 
 
-                }
+
+                };
 
 
-            };
+                verifyPassword().then(() => {
 
-            login(password, email);
+                    this.props.onLogin(password, email)
+
+
+                    // login(password, email);
+
+                })
+
+
+
+                // let login = (passwordInput, emailInput) => {
+                //
+                //     return function action(dispatch) {
+                //
+                //
+                //         let request = axios({
+                //
+                //             method: 'post',
+                //
+                //             url: "https://jammr-backend.herokuapp.com/login",
+                //
+                //             data: {
+                //
+                //                 password: passwordInput,
+                //
+                //
+                //                 email: emailInput
+                //
+                //
+                //             }
+                //
+                //
+                //         });
+                //
+                //
+                //         return request.then(response => {
+                //
+                //             if (response.data !== 'Unauthorized') {
+                //
+                //                 window.sessionStorage.setItem('x-auth', response.data);
+                //
+                //                 axios.defaults.headers.common['x-auth'] = sessionStorage.getItem('x-auth');
+                //
+                //                 this.setState({
+                //
+                //                     validPassword: false,
+                //
+                //                     validEmail: isValidEmail
+                //
+                //                 });
+                //
+                //                 this.props.onLogin(response.data);
+                //
+                //
+                //             }
+                //
+                //             else {
+                //
+                //                 console.log('isValidEmail is....' + isValidEmail);
+                //
+                //                 this.setState({
+                //
+                //                     validPassword: true,
+                //
+                //                     validEmail: isValidEmail
+                //
+                //                 })
+                //
+                //
+                //             }
+                //
+                //
+                //         })
+                //
+                //
+                //     }
+                //
+                //
+                // };
+
+                // login(password, email).then(() => {
+                //
+                //     this.setState({})
+                //
+                //
+                // })
+
+               // let result_  = login(password, email);
+               //
+               // if (result_ === true) {
+               //
+               //     this.setState({validPassword: result_})
+               //
+               // }
+               // else if (result_ === false) {
+               //
+               //     this.setState({validPassword: result_})
+               //
+               // }
+
+
+            }
+            else {
+
+                this.setState({validEmail: false})
+
+            }
+
+
 
 
         })
@@ -382,16 +500,13 @@ const mapDispatchToProps = (dispatch) => {
 
         },
 
-        onLogin: (hash) => {
+        onLogin: (password, email) => {
 
-            dispatch({
+            console.log('password is...' + password);
 
-                type: 'LOGIN',
+            console.log('email is...' + email);
 
-                payload: hash
-
-
-            })
+            dispatch(login(password, email))
 
 
         }

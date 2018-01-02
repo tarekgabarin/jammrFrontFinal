@@ -128,67 +128,56 @@ export function register(fields) {
     }
 };
 
-// export function login(password, email) {
-//
-//     return function action(dispatch) {
-//
-//
-//         let request = axios({
-//
-//             method: 'post',
-//
-//             url: "https://jammr-backend.herokuapp.com/register",
-//
-//             data: {
-//
-//                 password: password,
-//
-//
-//                 email: email
-//
-//
-//             }
-//
-//
-//         });
-//
-//
-//         return request.then(response => {
-//
-//             if (response.data !== 'Unauthorized') {
-//
-//                 window.sessionStorage.setItem('x-auth', response.data);
-//
-//                 axios.defaults.headers.common['x-auth'] = sessionStorage.getItem('x-auth');
-//
-//                 dispatch({
-//
-//                     type: 'LOGIN',
-//
-//                     payload: response.data
-//
-//
-//
-//                 })
-//
-//
-//             }
-//
-//             else {
-//
-//                 return response.data;
-//
-//
-//             }
-//
-//
-//
-//
-//
-//         })
-//
-//
-//     }
-//
-//
-// }
+export function login(password, email) {
+
+    return function action(dispatch) {
+
+
+        let request = axios({
+
+            method: 'post',
+
+            url: "https://jammr-backend.herokuapp.com/login",
+
+            data: {
+
+                password: password,
+
+
+                email: email
+
+
+            }
+
+
+        });
+
+
+        return request.then(response => {
+
+
+
+                window.sessionStorage.setItem('x-auth', response.data);
+
+                axios.defaults.headers.common['x-auth'] = sessionStorage.getItem('x-auth');
+
+                dispatch({
+
+                    type: 'LOGIN',
+
+                    payload: response.data
+
+
+
+                });
+
+
+
+
+        })
+
+
+    }
+
+
+}
