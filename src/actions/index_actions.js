@@ -42,14 +42,14 @@ export function register(fields) {
         //
         // console.log(fields);
 
-      ///  JSON.parse(fields);
+        ///  JSON.parse(fields);
 
         console.log('Below is typeof(fields)....');
 
         console.log(typeof(fields));
 
 
-        const request = axios({
+        let request = axios({
 
             method: 'post',
 
@@ -127,3 +127,68 @@ export function register(fields) {
 
     }
 };
+
+// export function login(password, email) {
+//
+//     return function action(dispatch) {
+//
+//
+//         let request = axios({
+//
+//             method: 'post',
+//
+//             url: "https://jammr-backend.herokuapp.com/register",
+//
+//             data: {
+//
+//                 password: password,
+//
+//
+//                 email: email
+//
+//
+//             }
+//
+//
+//         });
+//
+//
+//         return request.then(response => {
+//
+//             if (response.data !== 'Unauthorized') {
+//
+//                 window.sessionStorage.setItem('x-auth', response.data);
+//
+//                 axios.defaults.headers.common['x-auth'] = sessionStorage.getItem('x-auth');
+//
+//                 dispatch({
+//
+//                     type: 'LOGIN',
+//
+//                     payload: response.data
+//
+//
+//
+//                 })
+//
+//
+//             }
+//
+//             else {
+//
+//                 return response.data;
+//
+//
+//             }
+//
+//
+//
+//
+//
+//         })
+//
+//
+//     }
+//
+//
+// }

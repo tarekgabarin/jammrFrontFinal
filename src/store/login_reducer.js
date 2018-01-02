@@ -47,6 +47,23 @@ const loginReducer = (state = initialState, action) => {
 
     }
 
+    if (action.type === 'LOGIN'){
+
+
+        return {
+
+            ...state,
+
+            incorrectForm: false,
+
+            myId: action.payload
+
+
+        }
+
+
+    }
+
     return state
 
 
