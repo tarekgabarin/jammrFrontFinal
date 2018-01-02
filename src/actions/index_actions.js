@@ -94,6 +94,10 @@ export function register(fields) {
 
                 console.log(response);
 
+                window.sessionStorage.setItem('x-auth', response.data);
+
+                axios.defaults.headers.common['x-auth'] = sessionStorage.getItem('x-auth');
+
                 dispatch({
 
                     type: 'REGISTER',

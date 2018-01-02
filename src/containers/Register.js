@@ -408,9 +408,8 @@ class Register extends Component {
 
         // console.log(this.props);
 
-        if (this.state.isRegistered === true){
+        if (this.props.myId !== "" && this.props.myId !== undefined && this.props.myId !== null){
 
-           /// console.log(this.props.myId);
 
             return (
 
