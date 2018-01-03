@@ -49,6 +49,8 @@ const loginReducer = (state = initialState, action) => {
 
     if (action.type === 'LOGIN'){
 
+        console.log('LOGIN reducer runs');
+
 
         return {
 

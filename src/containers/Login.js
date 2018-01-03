@@ -8,7 +8,9 @@ import validator from 'validator'
 
 import axios from 'axios'
 
-import {login} from '../actions/index_actions'
+import {Redirect} from 'react-router-dom';
+
+///import {login} from '../actions/index_actions'
 
 import '../myStyles.css'
 
@@ -114,7 +116,12 @@ class Login extends Component {
 
                                     });
 
+                                }
+
+                                else if (response.data === "CORRECT_PASSWORD"){
+
                                     resolve();
+
 
                                 }
 
@@ -249,6 +256,18 @@ class Login extends Component {
 
 
     render() {
+
+        if (this.props.myId !== "" && this.props.myId !== undefined && this.props.myId !== null){
+
+
+            return (
+
+                <Redirect to="/account"/>
+
+            )
+
+
+        }
 
         console.log(this.props);
 
@@ -452,7 +471,7 @@ let mapStateToProps = (state) => {
 
     console.log('state in mapStateToProps is....');
 
-    console.log(state);
+    console.log(state.loginReducer);
 
     return {
 
@@ -502,11 +521,49 @@ const mapDispatchToProps = (dispatch) => {
 
         onLogin: (password, email) => {
 
-            console.log('password is...' + password);
 
-            console.log('email is...' + email);
 
-            dispatch(login(password, email))
+            // dispatch(login(password, email));
+
+
+            axios({
+
+                method: 'post',
+
+                url: "https://jammr-backend.herokuapp.com/login",
+
+                data: {
+
+                    password: password,
+
+
+                    email: email
+
+
+                }
+
+
+            }).then(response => {
+
+                console.log('callback for onLogin runs');
+
+
+                window.sessionStorage.setItem('x-auth', response.data);
+
+                axios.defaults.headers.common['x-auth'] = sessionStorage.getItem('x-auth');
+
+                dispatch({
+
+                    type: 'LOGIN',
+
+                    payload: response.data
+
+
+
+                });
+
+
+            });
 
 
         }
