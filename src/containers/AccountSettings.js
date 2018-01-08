@@ -9,6 +9,8 @@ import '../custom-style.css'
 
 import {connect} from 'react-redux'
 
+import axios from 'axios'
+
 class AccountSettings extends Component {
 
 
@@ -28,7 +30,11 @@ class AccountSettings extends Component {
 
             formArts: this.props.iWantToMake,
 
-            formGender: this.props.gender
+            formGender: this.props.gender,
+
+            formTouched: false,
+
+            validLocation: true
 
         };
 
@@ -45,7 +51,7 @@ class AccountSettings extends Component {
 
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
 
         console.log('Component has updated');
 
@@ -81,7 +87,7 @@ class AccountSettings extends Component {
 
     }
 
-    removeArt(event){
+    removeArt(event) {
 
         console.log(this);
 
@@ -126,7 +132,6 @@ class AccountSettings extends Component {
             this.setState({formArts: lst});
 
         });
-
 
 
     }
@@ -197,8 +202,123 @@ class AccountSettings extends Component {
 
     }
 
+    submitValidate() {
+
+        this.setState({formTouched: true});
+
+        function formatStrings(str) {
+
+            if (str !== undefined) {
+
+                str = str.split('');
+
+                for (let i = 0; i < str.length; i++) {
+
+                    if (str[i] === ' ') {
+
+                        str[i] = '+';
+
+                    }
+                }
+
+                return str.join('');
+
+            }
+
+
+        }
+
+        let inputAddress = formatStrings(this.state.formStreet);
+
+        let inputCity = formatStrings(this.state.formCity);
+
+        let inputProvince = formatStrings(this.state.formProvince);
+
+        let apiString = `https://maps.googleapis.com/maps/api/geocode/json?address=+${inputAddress}, +${inputCity}, +${inputProvince}, +CA&key=AIzaSyCZGDHMtmb2WAoZG1VukVSumsjz9kNGJOw`;
+
+        axios.get(apiString)
+
+            .then(response => {
+
+                console.log(response);
+
+                if (response.data["status"] === 'OK') {
+
+                    this.setState({validLocation: true})
+
+                }
+                else if (response.data["status"] === 'ZERO_RESULTS') {
+
+                    this.setState({validLocation: false})
+                }
+
+
+            })
+
+
+            .catch(err => {
+
+                if (err) throw err;
+
+            });
+
+
+        let saveChanges = () => {
+
+            return new Promise((resolve, reject) => {
+
+                if (this.state.validLocation && (this.state.formSkills.length !== 0) && (this.state.formArts.length !== 0)) {
+
+                    resolve()
+
+                }
+
+
+            })
+
+
+        };
+
+        saveChanges().then(() => {
+
+            axios({
+
+                method: 'put',
+
+                url: "https://jammr-backend.herokuapp.com/update",
+
+                data: {
+
+                    iWantToMake: this.state.formArts,
+
+                    skills: this.state.formSkills,
+
+                    city: this.state.formCity,
+
+                    street: this.state.formStreet,
+
+                    provinceState: this.state.formProvince
+
+                }
+
+
+            }).then(response => {
+
+
+                this.props.onUpdateUser(response.data)
+
+
+            })
+
+
+        })
+
+    }
+
 
     render() {
+
+
 
         console.log(this.props);
 
@@ -255,80 +375,72 @@ class AccountSettings extends Component {
             if (this.state.formSkills.indexOf(theSkills[i]) !== -1) {
 
                 SkillsOptionsJSX.push(
-
                     <li>
 
-                    <label className="checkbox">
-                    <input value={theSkills[i]}
+                        <label className="checkbox">
+                            <input value={theSkills[i]}
 
-                           onChange={(e) => this.addSkill(e)}
+                                   onChange={(e) => this.addSkill(e)}
 
-                           type="checkbox" defaultChecked/>
-                    {theSkills[i]}
-                </label>
+                                   type="checkbox" defaultChecked/>
+                            {theSkills[i]}
+                        </label>
                     </li>
-
                 )
 
             }
             else {
 
                 SkillsOptionsJSX.push(
-
                     <li>
-                    <label className="checkbox">
-                    <input value={theSkills[i]}
+                        <label className="checkbox">
+                            <input value={theSkills[i]}
 
-                           onChange={(e) => this.removeSkill(e)}
+                                   onChange={(e) => this.removeSkill(e)}
 
-                           type="checkbox"/>
-                    {theSkills[i]}
-                </label>
+                                   type="checkbox"/>
+                            {theSkills[i]}
+                        </label>
                     </li>
-                        )
+                )
 
             }
 
         }
 
-        for (let i = 0; i < theArts.length; i++){
+        for (let i = 0; i < theArts.length; i++) {
 
-            if (this.state.formArts.indexOf(theArts[i]) !== -1){
+            if (this.state.formArts.indexOf(theArts[i]) !== -1) {
 
                 ArtsOptionsJSX.push(
-
                     <li>
 
-                    <label className="checkbox">
-                        <input value={theArts[i]}
+                        <label className="checkbox">
+                            <input value={theArts[i]}
 
-                               onClick={(e) => this.removeArt(e)}
+                                   onClick={(e) => this.removeArt(e)}
 
-                               type="checkbox" defaultChecked/>
-                        {theArts[i]}
-                    </label>
+                                   type="checkbox" defaultChecked/>
+                            {theArts[i]}
+                        </label>
                     </li>
-
                 )
 
             }
             else {
 
                 ArtsOptionsJSX.push(
-
                     <li>
-                    <label className="checkbox">
-                        <input value={theArts[i]}
+                        <label className="checkbox">
+                            <input value={theArts[i]}
 
-                               onClick={(e) => this.addArt(e)}
+                                   onClick={(e) => this.addArt(e)}
 
-                               type="checkbox"/>
-                        {theArts[i]}
-                    </label>
+                                   type="checkbox"/>
+                            {theArts[i]}
+                        </label>
 
                     </li>
-
-
                 )
 
 
@@ -468,6 +580,12 @@ class AccountSettings extends Component {
 
                     </div>
 
+                    {
+                        (this.state.formTouched && !this.state.validLocation) ? <span className="has-warning-text">Please provide a real address</span> : <span style={{visibility: "hidden"}}>Hidden</span>
+
+
+                    }
+
                     <div className="block">
 
 
@@ -486,6 +604,11 @@ class AccountSettings extends Component {
 
                     </ul>
 
+                    {
+                        (this.state.formTouched && (this.state.formSkills.length === 0)) ? <span className="has-warning-text">Please select at least one value</span> : <span style={{visibility: "hidden"}}>Hidden</span>
+
+
+                    }
 
 
                     <div className="block">
@@ -502,11 +625,47 @@ class AccountSettings extends Component {
 
                     <ul>
 
-                    {ArtsOptionsJSX}
+                        {ArtsOptionsJSX}
 
                     </ul>
 
+
+                    {
+                        (this.state.formTouched && (this.state.formArts.length === 0)) ? <span className="has-warning-text">Please select at least one value</span> : <span style={{visibility: "hidden"}}>Hidden</span>
+
+
+                    }
+
                 </form>
+
+                <div className="block">
+
+
+                </div>
+
+                <div className="field">
+                    <p className="control">
+                        <button onClick={this.submitValidate} className="button is-fullwidth is-primary">
+                            Save changes
+                        </button>
+                    </p>
+                </div>
+
+                <div className="field">
+                    <p className="control">
+                        <p className="control">
+                            <button className="button is-fullwidth is-secondary">
+                                Reset
+                            </button>
+                        </p>
+                    </p>
+
+                </div>
+
+                <div className="block">
+
+
+                </div>
 
 
             </div>
@@ -517,6 +676,32 @@ class AccountSettings extends Component {
 
 
         )
+
+
+    }
+
+
+}
+
+function mapDispatchToProps(dispatch){
+
+    return {
+
+        onUpdateUser: (userObj) => {
+
+            dispatch({
+
+                type: 'UPDATE_USER_INFO',
+
+                payload: userObj
+
+
+            })
+
+
+
+        }
+
 
 
     }
@@ -547,4 +732,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, null)(AccountSettings)
+export default connect(mapStateToProps, mapDispatchToProps)(AccountSettings)

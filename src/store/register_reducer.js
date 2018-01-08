@@ -1,10 +1,10 @@
-import { initialState } from './initialState'
+import {initialState} from './initialState'
 
 import axios from 'axios'
 
 const registerReducer = (state = initialState, action) => {
 
-    if (action.type === 'LOGIN_EMAIL'){
+    if (action.type === 'LOGIN_EMAIL') {
 
 
         return {
@@ -20,7 +20,7 @@ const registerReducer = (state = initialState, action) => {
 
     }
 
-    if (action.type === 'LOGIN_PASSWORD'){
+    if (action.type === 'LOGIN_PASSWORD') {
 
 
         return {
@@ -35,7 +35,7 @@ const registerReducer = (state = initialState, action) => {
 
     }
 
-    if (action.type === 'LOGIN_FORM_INCORRECT'){
+    if (action.type === 'LOGIN_FORM_INCORRECT') {
 
         return {
 
@@ -49,7 +49,7 @@ const registerReducer = (state = initialState, action) => {
 
     }
 
-    if (action.type === 'LOGIN'){
+    if (action.type === 'LOGIN') {
 
         console.log('LOGIN reducer runs');
 
@@ -68,7 +68,7 @@ const registerReducer = (state = initialState, action) => {
 
     }
 
-    if (action.type === "GET_MY_INFO"){
+    if (action.type === "GET_MY_INFO") {
 
         return {
 
@@ -100,10 +100,9 @@ const registerReducer = (state = initialState, action) => {
         }
 
 
-
     }
 
-    if (action.type === 'GET_PROFILE_PIC'){
+    if (action.type === 'GET_PROFILE_PIC') {
 
         return {
 
@@ -119,7 +118,7 @@ const registerReducer = (state = initialState, action) => {
 
     }
 
-    if (action.type === 'REGISTER'){
+    if (action.type === 'REGISTER') {
 
 
         // console.log('REGISTER RUNS');
@@ -162,13 +161,34 @@ const registerReducer = (state = initialState, action) => {
             incorrectForm: false
 
 
-        }
-
-
-
+        };
 
 
     }
+
+    if (action.type === 'UPDATE_INFO') {
+
+        return {
+
+            ...state,
+
+            iWantToMake: action.payload.iWantToMake,
+
+            skills: action.payload.skills,
+
+            city: action.payload.city,
+
+            street: action.payload.street,
+
+            provinceState: action.payload.provinceState
+
+
+        }
+
+
+    }
+
+
 
     return state
 
