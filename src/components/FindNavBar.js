@@ -212,6 +212,10 @@ class FindNavBar extends Component {
                 <div onClick={this.props.onMainClick} id="main">
 
 
+
+
+
+
                 </div>
 
 

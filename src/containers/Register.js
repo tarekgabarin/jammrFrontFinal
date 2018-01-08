@@ -378,8 +378,6 @@ class Register extends Component {
 
                         this.props.onRegister(values);
 
-                        // this.setState({isRegistered: true});
-
 
                     })
                         .catch(err => {
@@ -404,11 +402,7 @@ class Register extends Component {
 
     render() {
 
-        // console.log("this.props is....");
-
-        // console.log(this.props);
-
-        if (this.props.myId !== "" && this.props.myId !== undefined && this.props.myId !== null){
+        if (this.props.isLoggedIn) {
 
 
             return (
@@ -547,8 +541,6 @@ class Register extends Component {
 
         if (this.state.validLocation === false) {
 
-            // console.log('this.state.validLocation is...' + this.state.validLocation);
-
             locationWarning.push(
                 <span className="has-warning-text">
                 Please provide a real address within Canada
@@ -557,8 +549,6 @@ class Register extends Component {
 
         }
         else if (this.state.validLocation === false) {
-
-            // console.log('this.state.validLocation is...' + this.state.validLocation);
 
             locationWarning.push(
                 <span style={{visibility: 'hidden'}}>Hidden</span>
@@ -570,9 +560,6 @@ class Register extends Component {
         let emailWarning = [];
 
         if (this.state.validEmail === false) {
-
-
-            // console.log('this.state.validEmail is...' + this.state.validEmail);
 
             emailWarning.push(
                 <span className="has-warning-text">Account with email already exists</span>
@@ -1118,15 +1105,9 @@ const mapDispatchToProps = (dispatch) => {
 
         onRegister: (obj) => {
 
-            console.log(obj);
-
-            // let result_ = register(obj);
-            //
-            // console.log(result_);
 
             dispatch(register(obj));
 
-            // console.log(dispatch(register(obj)));
 
         },
 
@@ -1136,12 +1117,12 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state) {
 
- // console.log(state);
-
 
     return {
 
-        myId: state.registerReducer.myId
+        myId: state.registerReducer.myId,
+
+        isLoggedIn: state.registerReducer.isLoggedIn
 
     }
 

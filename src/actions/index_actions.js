@@ -2,10 +2,6 @@ import axios from 'axios'
 
 export function register(fields) {
 
-    console.log('below are the fields');
-
-    console.log(fields);
-
 
     return function action(dispatch) {
 
@@ -33,20 +29,6 @@ export function register(fields) {
 
 
         });
-
-        console.log('artsArr is...' + artsArr);
-
-        console.log('skillsArs is...' + skillsArr);
-
-        // console.log('Below is fields....');
-        //
-        // console.log(fields);
-
-        ///  JSON.parse(fields);
-
-        console.log('Below is typeof(fields)....');
-
-        console.log(typeof(fields));
 
 
         let request = axios({
@@ -90,9 +72,6 @@ export function register(fields) {
 
         return request.then(response => {
 
-                console.log('axios call ran! Below is response....');
-
-                console.log(response);
 
                 window.sessionStorage.setItem('x-auth', response.data);
 
@@ -128,56 +107,3 @@ export function register(fields) {
     }
 };
 
-export function login(password, email) {
-
-    return function action(dispatch) {
-
-
-        let request = axios({
-
-            method: 'post',
-
-            url: "https://jammr-backend.herokuapp.com/login",
-
-            data: {
-
-                password: password,
-
-
-                email: email
-
-
-            }
-
-
-        });
-
-
-        return request.then(response => {
-
-
-
-                window.sessionStorage.setItem('x-auth', response.data);
-
-                axios.defaults.headers.common['x-auth'] = sessionStorage.getItem('x-auth');
-
-                dispatch({
-
-                    type: 'LOGIN',
-
-                    payload: response.data
-
-
-
-                });
-
-
-
-
-        })
-
-
-    }
-
-
-}

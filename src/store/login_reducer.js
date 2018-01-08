@@ -1,4 +1,15 @@
-import {initialState} from './initialState';
+
+const initialState = {
+
+    password: "",
+
+    email: "",
+
+    myId: "",
+
+    incorrectForm: false
+
+};
 
 const loginReducer = (state = initialState, action) => {
 

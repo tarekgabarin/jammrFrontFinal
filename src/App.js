@@ -18,7 +18,6 @@ import MessageNavBar from './components/MessageNavBar'
 class App extends Component {
 
 
-
     render() {
 
         return (
@@ -46,6 +45,20 @@ class App extends Component {
 
 
                     }}/>
+
+                    <Route path="/register" render={() => {
+
+
+                        return (
+
+                            <Register/>
+
+
+                        )
+
+
+                    }}/>
+
 
                     <Route path="/account" render={() => {
 

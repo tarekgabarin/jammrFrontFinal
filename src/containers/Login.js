@@ -10,7 +10,6 @@ import axios from 'axios'
 
 import {Redirect} from 'react-router-dom';
 
-///import {login} from '../actions/index_actions'
 
 import '../myStyles.css'
 
@@ -83,7 +82,7 @@ class Login extends Component {
 
             console.log("Witin then callback, isValidEmail is..." + isValidEmail);
 
-            if (isValidEmail === true){
+            if (isValidEmail === true) {
 
 
                 let verifyPassword = () => {
@@ -106,7 +105,7 @@ class Login extends Component {
                         })
                             .then(response => {
 
-                                if (response.data === 'INCORRECT_PASSWORD'){
+                                if (response.data === 'INCORRECT_PASSWORD') {
 
                                     this.setState({
 
@@ -118,7 +117,7 @@ class Login extends Component {
 
                                 }
 
-                                else if (response.data === "CORRECT_PASSWORD"){
+                                else if (response.data === "CORRECT_PASSWORD") {
 
                                     resolve();
 
@@ -129,9 +128,7 @@ class Login extends Component {
                             })
 
 
-
                     })
-
 
 
                 };
@@ -142,101 +139,7 @@ class Login extends Component {
                     this.props.onLogin(password, email)
 
 
-                    // login(password, email);
-
                 })
-
-
-
-                // let login = (passwordInput, emailInput) => {
-                //
-                //     return function action(dispatch) {
-                //
-                //
-                //         let request = axios({
-                //
-                //             method: 'post',
-                //
-                //             url: "https://jammr-backend.herokuapp.com/login",
-                //
-                //             data: {
-                //
-                //                 password: passwordInput,
-                //
-                //
-                //                 email: emailInput
-                //
-                //
-                //             }
-                //
-                //
-                //         });
-                //
-                //
-                //         return request.then(response => {
-                //
-                //             if (response.data !== 'Unauthorized') {
-                //
-                //                 window.sessionStorage.setItem('x-auth', response.data);
-                //
-                //                 axios.defaults.headers.common['x-auth'] = sessionStorage.getItem('x-auth');
-                //
-                //                 this.setState({
-                //
-                //                     validPassword: false,
-                //
-                //                     validEmail: isValidEmail
-                //
-                //                 });
-                //
-                //                 this.props.onLogin(response.data);
-                //
-                //
-                //             }
-                //
-                //             else {
-                //
-                //                 console.log('isValidEmail is....' + isValidEmail);
-                //
-                //                 this.setState({
-                //
-                //                     validPassword: true,
-                //
-                //                     validEmail: isValidEmail
-                //
-                //                 })
-                //
-                //
-                //             }
-                //
-                //
-                //         })
-                //
-                //
-                //     }
-                //
-                //
-                // };
-
-                // login(password, email).then(() => {
-                //
-                //     this.setState({})
-                //
-                //
-                // })
-
-               // let result_  = login(password, email);
-               //
-               // if (result_ === true) {
-               //
-               //     this.setState({validPassword: result_})
-               //
-               // }
-               // else if (result_ === false) {
-               //
-               //     this.setState({validPassword: result_})
-               //
-               // }
 
 
             }
@@ -247,8 +150,6 @@ class Login extends Component {
             }
 
 
-
-
         })
 
 
@@ -257,7 +158,7 @@ class Login extends Component {
 
     render() {
 
-        if (this.props.myId !== "" && this.props.myId !== undefined && this.props.myId !== null){
+        if (this.props.isLoggedIn === true) {
 
 
             return (
@@ -290,8 +191,6 @@ class Login extends Component {
             warningJSX.push(<span className="has-warning-text">Incorrect password</span>)
 
         }
-
-        /// console.log('this.props.email is...' + this.props.email);
 
 
         return (
@@ -479,7 +378,9 @@ let mapStateToProps = (state) => {
 
         email: state.loginReducer.email,
 
-        myId: state.loginReducer.myId
+        myId: state.loginReducer.myId,
+
+       isLoggedIn: state.registerReducer.isLoggedIn
 
     };
 
@@ -522,10 +423,6 @@ const mapDispatchToProps = (dispatch) => {
         onLogin: (password, email) => {
 
 
-
-            // dispatch(login(password, email));
-
-
             axios({
 
                 method: 'post',
@@ -559,8 +456,30 @@ const mapDispatchToProps = (dispatch) => {
                     payload: response.data
 
 
-
                 });
+
+                axios({
+
+                    method: 'get',
+
+                    url: "https://jammr-backend.herokuapp.com/getMyInfo"
+
+
+                }).then(res => {
+
+                    dispatch({
+
+                        type: 'GET_MY_INFO',
+
+                        payload: res.data
+
+                    })
+
+                    
+
+
+
+                })
 
 
             });

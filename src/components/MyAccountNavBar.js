@@ -7,6 +7,8 @@ import '../CustomNav.css'
 
 import {connect} from 'react-redux'
 
+import AccountSettings from '../containers/AccountSettings'
+
 import {Link} from 'react-router-dom'
 
 
@@ -210,6 +212,13 @@ class MyAccountNavBar extends Component {
                 </div>
 
                 <div onClick={this.props.onMainClick} id="main">
+
+                    <section>
+
+                        <AccountSettings/>
+
+                    </section>
+
 
 
                 </div>

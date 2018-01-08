@@ -26,3 +26,13 @@
     color: hsl(348, 100%, 61%)
 
 }
+
+@media only screen and (max-width : 320px) {
+    .container-mobile {
+
+        margin-right: 32px !important;
+
+        margin-left: 32px !important;
+
+    }
+}
