@@ -52,8 +52,6 @@ class AccountSettings extends Component {
         // this.handleClose = this.handleClose.bind(this);
 
 
-        this.imageName = require(this.state.profilePic);
-
 
         this.selectProvince = this.selectProvince.bind(this);
 
@@ -540,7 +538,7 @@ class AccountSettings extends Component {
                             <div className="column">
 
                                 <figure className="image is-square">
-                                    <img src={this.imageName}/>
+                                    <img src={this.state.profilePic}/>
                                 </figure>
 
 

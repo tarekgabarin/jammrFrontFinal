@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07b800c2-5375-4643-90a1-7e0822cdd94a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Avatars/Female-1.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Avatars/Female-2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Avatars/Male-6.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Avatars/Male-7.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Generic-Avatar.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/index_actions.js" afterPath="$PROJECT_DIR$/src/actions/index_actions.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/containers/AccountSettings.js" afterPath="$PROJECT_DIR$/src/containers/AccountSettings.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/store/register_reducer.js" afterPath="$PROJECT_DIR$/src/store/register_reducer.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -63,8 +54,8 @@
       <file leaf-file-name="AccountSettings.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/containers/AccountSettings.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="536" column="0" lean-forward="true" selection-start-line="536" selection-start-column="0" selection-end-line="536" selection-end-column="0" />
+            <state relative-caret-position="-2910">
+              <caret line="544" column="34" lean-forward="true" selection-start-line="544" selection-start-column="34" selection-end-line="544" selection-end-column="34" />
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
               </folding>
@@ -592,12 +583,12 @@
       <workItem from="1515442726550" duration="7361000" />
       <workItem from="1515453563396" duration="4089000" />
       <workItem from="1515459348145" duration="4124000" />
-      <workItem from="1515516393991" duration="3727000" />
+      <workItem from="1515516393991" duration="4277000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="301330000" />
+    <option name="totallyTimeSpent" value="301880000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -1012,8 +1003,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/AccountSettings.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="536" column="0" lean-forward="true" selection-start-line="536" selection-start-column="0" selection-end-line="536" selection-end-column="0" />
+        <state relative-caret-position="-2910">
+          <caret line="544" column="34" lean-forward="true" selection-start-line="544" selection-start-column="34" selection-end-line="544" selection-end-column="34" />
           <folding>
             <element signature="e#0#49#0" expanded="true" />
           </folding>
