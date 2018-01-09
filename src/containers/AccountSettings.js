@@ -1,7 +1,8 @@
-import React, {Component} from 'react'
+import React, {Component, PropTypes} from 'react'
 
 import '../myStyles.css'
 
+import RaisedButton from 'material-ui/RaisedButton';
 
 import '../CustomNav.css'
 
@@ -10,6 +11,8 @@ import '../custom-style.css'
 import {connect} from 'react-redux'
 
 import axios from 'axios'
+
+import Dialog from 'material-ui/Dialog';
 
 class AccountSettings extends Component {
 
@@ -34,9 +37,18 @@ class AccountSettings extends Component {
 
             formTouched: false,
 
-            validLocation: true
+            validLocation: true,
+
+            isShowingModal: false,
 
         };
+
+        // this.handleOpen = this.handleOpen.bind(this);
+        //
+        // this.handleClose = this.handleClose.bind(this);
+
+
+
 
 
         this.selectProvince = this.selectProvince.bind(this);
@@ -49,7 +61,31 @@ class AccountSettings extends Component {
 
         this.removeSkill = this.removeSkill.bind(this);
 
+        this.handleClick = this.handleClick.bind(this);
+
+        this.handleClose = this.handleClose.bind(this)
+
+
     }
+
+    handleClick = () => this.setState({isShowingModal: true});
+
+
+    handleClose = () => this.setState({isShowingModal: false});
+
+
+    // handleOpen = () => {
+    //
+    //     this.setState({open: true});
+    // };
+    //
+    // handleClose = () => {
+    //
+    //
+    //     this.setState({open: false});
+    // };
+
+
 
     componentDidUpdate() {
 
@@ -319,8 +355,9 @@ class AccountSettings extends Component {
     render() {
 
 
-
         console.log(this.props);
+
+        console.log(this.state.open);
 
 
         let provinces_ = ['Ontario', 'Quebec', 'Manitoba', "Saskatchewan", "Alberta", "British Columbia", "Yukon", "Northwest Territories", "Nunavut", "Newfoundland And Labrador", "New Brunswick", "Nova Scotia", "Prince Edward Island"];
@@ -448,11 +485,27 @@ class AccountSettings extends Component {
 
         }
 
+
+
+
         return (
 
+            <section>
 
 
             <div className="container" style={{marginRight: 32, marginLeft: 32}}>
+
+                <Dialog
+                    title="Dialog With Date Picker"
+
+                    modal={false}
+                    open={this.state.isShowingModal}
+                    onRequestClose={this.handleClose}
+                >
+                    Open a Date Picker dialog from within a dialog.
+
+                </Dialog>
+
 
                 <div className="title">Personal Info</div>
 
@@ -498,9 +551,8 @@ class AccountSettings extends Component {
 
                         </div>
 
-                        <button className="is-primary is-hidden-desktop is-fullwidth button">Change Profile Pic</button>
+                        <RaisedButton label="Dialog With Date Picker" onClick={this.handleClick} />
 
-                        <button className="is-primary button is-hidden-mobile">Change Profile Pic</button>
 
                     </div>
 
@@ -581,7 +633,9 @@ class AccountSettings extends Component {
                     </div>
 
                     {
-                        (this.state.formTouched && !this.state.validLocation) ? <span className="has-warning-text">Please provide a real address</span> : <span style={{visibility: "hidden"}}>Hidden</span>
+                        (this.state.formTouched && !this.state.validLocation) ?
+                            <span className="has-warning-text">Please provide a real address</span> :
+                            <span style={{visibility: "hidden"}}>Hidden</span>
 
 
                     }
@@ -605,7 +659,9 @@ class AccountSettings extends Component {
                     </ul>
 
                     {
-                        (this.state.formTouched && (this.state.formSkills.length === 0)) ? <span className="has-warning-text">Please select at least one value</span> : <span style={{visibility: "hidden"}}>Hidden</span>
+                        (this.state.formTouched && (this.state.formSkills.length === 0)) ?
+                            <span className="has-warning-text">Please select at least one value</span> :
+                            <span style={{visibility: "hidden"}}>Hidden</span>
 
 
                     }
@@ -631,7 +687,9 @@ class AccountSettings extends Component {
 
 
                     {
-                        (this.state.formTouched && (this.state.formArts.length === 0)) ? <span className="has-warning-text">Please select at least one value</span> : <span style={{visibility: "hidden"}}>Hidden</span>
+                        (this.state.formTouched && (this.state.formArts.length === 0)) ?
+                            <span className="has-warning-text">Please select at least one value</span> :
+                            <span style={{visibility: "hidden"}}>Hidden</span>
 
 
                     }
@@ -670,6 +728,8 @@ class AccountSettings extends Component {
 
             </div>
 
+            </section>
+
 
 
 
@@ -683,7 +743,7 @@ class AccountSettings extends Component {
 
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
 
     return {
 
@@ -699,9 +759,7 @@ function mapDispatchToProps(dispatch){
             })
 
 
-
         }
-
 
 
     }
