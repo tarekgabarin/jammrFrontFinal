@@ -94,7 +94,9 @@ const registerReducer = (state = initialState, action) => {
 
             imLookingFor: action.payload.imLookingFor,
 
-            isLoggedIn: true
+            isLoggedIn: true,
+
+            profilePic: action.payload.profilePic
 
 
         }
@@ -158,7 +160,9 @@ const registerReducer = (state = initialState, action) => {
 
             isLoggedIn: true,
 
-            incorrectForm: false
+            incorrectForm: false,
+
+            profilePic: action.payload.profilePic
 
 
         };
@@ -181,6 +185,8 @@ const registerReducer = (state = initialState, action) => {
             street: action.payload.street,
 
             provinceState: action.payload.provinceState
+
+
 
 
         }

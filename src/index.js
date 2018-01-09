@@ -20,14 +20,25 @@ const muiTheme = getMuiTheme({
 
     fontFamily: "Raleway, sans-serif",
 
-    palette: {
-        canvasColor: '#273043',
-    },
+
     appBar: {
         height: 50,
     },
+
+    raisedButton: {
+
+        color: '#273043',
+
+        textColor: '#FFFFFF',
+
+
+    },
+
+
 });
 
+
+muiTheme.shadows = [];
 
 const store = createStore(
     rootReducer,

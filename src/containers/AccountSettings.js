@@ -12,6 +12,8 @@ import {connect} from 'react-redux'
 
 import axios from 'axios'
 
+
+
 import Dialog from 'material-ui/Dialog';
 
 class AccountSettings extends Component {
@@ -35,6 +37,8 @@ class AccountSettings extends Component {
 
             formGender: this.props.gender,
 
+            profilePic: this.props.profilePic,
+
             formTouched: false,
 
             validLocation: true,
@@ -48,7 +52,7 @@ class AccountSettings extends Component {
         // this.handleClose = this.handleClose.bind(this);
 
 
-
+        this.imageName = require(this.state.profilePic);
 
 
         this.selectProvince = this.selectProvince.bind(this);
@@ -354,6 +358,15 @@ class AccountSettings extends Component {
 
     render() {
 
+        const buttonStyle = {
+
+            backgroundColor: '#273043',
+
+            borderRadius: 0
+
+
+        };
+
 
         console.log(this.props);
 
@@ -527,7 +540,7 @@ class AccountSettings extends Component {
                             <div className="column">
 
                                 <figure className="image is-square">
-                                    <img src="https://bulma.io/images/placeholders/256x256.png"/>
+                                    <img src={this.imageName}/>
                                 </figure>
 
 
@@ -551,7 +564,7 @@ class AccountSettings extends Component {
 
                         </div>
 
-                        <RaisedButton label="Dialog With Date Picker" onClick={this.handleClick} />
+                        <RaisedButton label="Change Profile Pic" disableTouchRipple="true" style={buttonStyle} onClick={this.handleClick} />
 
 
                     </div>
@@ -783,7 +796,9 @@ function mapStateToProps(state) {
 
         gender: state.registerReducer.gender,
 
-        incorrectForm: state.registerReducer.incorrectForm
+        incorrectForm: state.registerReducer.incorrectForm,
+
+        profilePic: state.registerReducer.profilePic
 
     }
 

@@ -89,7 +89,9 @@ export function register(fields) {
 
                         skills: skillsArr,
 
-                        iWantToMake: artsArr
+                        iWantToMake: artsArr,
+
+                        profilePic: "../Generic-Avatar.png"
 
                     }
 
